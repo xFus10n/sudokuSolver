@@ -104,7 +104,7 @@ public final class Field {
     /**
      * initialize fields
      */
-    public static void resetFields(){
-        field = null;
+    public void resetFields(){
+        sudokuFields = new int[SIZE][SIZE];
     }
 }

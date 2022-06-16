@@ -1,5 +1,6 @@
 package com.sudoku;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,9 +9,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class FieldTest {
     private static Field sFields;
 
+    @BeforeAll
+    static void beforeAll() {
+        sFields = Field.getInstance();
+    }
+
     @BeforeEach
     void setUp() {
-        Field.resetFields();
+        sFields.resetFields();
     }
 
     @Test
@@ -44,7 +50,7 @@ class FieldTest {
         assertArrayEquals(expectedFields, sudokuFields);
 
         var initialFields = new int[9][9];
-        Field.resetFields();
+        sFields.resetFields();
         assertArrayEquals(initialFields, Field.getInstance().getSudokuFields());
     }
 }
