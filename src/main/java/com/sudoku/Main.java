@@ -11,14 +11,10 @@ public class Main {
     private void run(String argument){
         logger.info(argument);
         var sudokuField = Field.getInstance();
-        sudokuField.setField(-1,2,3);
-        sudokuField.setField(9,2,3);
-        sudokuField.setField(0,-1,3);
-        sudokuField.setField(10,10,3);
-        sudokuField.setField(1,10,3);
-        sudokuField.setField(0,0,5);
-        sudokuField.setField(1,1,5);
-        sudokuField.setField(2,2,5);
+        sudokuField.setField(0,3);
+        sudokuField.setField(8,3);
+        sudokuField.setField(72,3);
+        sudokuField.setField(80,3);
         sudokuField.showFields(logger);
     }
 }
