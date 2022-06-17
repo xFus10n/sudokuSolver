@@ -4,6 +4,11 @@ import com.sudoku.Field;
 
 public class Show implements Action{
     @Override
+    public int id() {
+        return 1;
+    }
+
+    @Override
     public String name() {
         return "print sudoku fields";
     }

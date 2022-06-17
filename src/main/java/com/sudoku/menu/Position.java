@@ -9,6 +9,11 @@ public class Position implements Action {
     private final Logger logger = Logger.getLogger(Position.class);
 
     @Override
+    public int id() {
+        return 2;
+    }
+
+    @Override
     public String name() {
         return "set sudoku field value";
     }
