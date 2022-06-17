@@ -19,7 +19,7 @@ public final class ActionsHandler {
      * Each command assigned to an ID in tree map
      * @return map of actions for menu
      */
-    public static Map<Integer, Action> getServices() {
+    public static TreeMap<Integer, Action> getServices() {
 
         Reflections reflections = new Reflections("com.sudoku.menu");
         Set<Class<? extends Action>> classes = reflections.getSubTypesOf(Action.class);

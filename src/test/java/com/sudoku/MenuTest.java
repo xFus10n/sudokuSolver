@@ -7,7 +7,6 @@ import java.util.Map;
 
 public class MenuTest {
 
-
     @Test
     void testMenu(){
         Map<Integer, Action> services = ActionsHandler.getServices();

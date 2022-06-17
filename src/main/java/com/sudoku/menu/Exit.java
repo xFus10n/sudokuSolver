@@ -15,6 +15,6 @@ public class Exit implements Action{
 
     @Override
     public void execute(Field sudokuField) {
-
+        System.exit(0);
     }
 }
