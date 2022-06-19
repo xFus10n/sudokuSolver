@@ -64,7 +64,7 @@ public final class Field {
      * @param value value from 0 to 9 where 0 is hidden value
      * @return true if set was successful
      */
-    public boolean setField(int row, int col, int value){
+    private boolean setField(int row, int col, int value){
         if (row < 0 || row >= SIZE) return false;
         if (col < 0 || col >= SIZE) return false;
         if (value < 0 || value > SIZE ) return false;
@@ -99,6 +99,14 @@ public final class Field {
         int row = position / SIZE;
         int col = position - (row * SIZE);
         return setField(row, col, value);
+    }
+
+    /**
+     * Set sudoku field from command line
+     * @return
+     */
+    public boolean setFields(){
+        return false;
     }
 
     /**

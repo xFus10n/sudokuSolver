@@ -1,14 +1,16 @@
 package com.sudoku;
 import com.sudoku.menuHandler.Menu;
+import com.sudoku.properties.Arguments;
 
 
 public class Main {
     public static void main(String[] args) {
+        Arguments.setArguments(args);
         var main = new Main();
-        main.run(args);
+        main.run();
     }
 
-    private void run(String[] args){
+    private void run(){
         new Menu().run();
     }
 }
