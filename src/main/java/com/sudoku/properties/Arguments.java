@@ -24,7 +24,7 @@ public class Arguments {
             }
             return arguments;
         } else {
-            ConsoleLogger.getInstance().toConsole("Set arguments in main method first");
+            ConsoleLogger.getInstance().toConsole("Pass arguments in main method first");
             System.exit(0);
         }
         return null;
