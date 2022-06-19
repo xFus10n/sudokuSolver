@@ -42,7 +42,6 @@ public class Menu {
 
     public void attachShutDownHook(Scanner scanner) {
         ConsoleLogger logger = ConsoleLogger.getInstance();
-        logger.toConsole("attaching shutdown hook");
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             scanner.close();
             logger.toConsole("application shutdown");
