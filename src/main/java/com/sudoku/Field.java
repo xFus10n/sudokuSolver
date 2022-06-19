@@ -1,13 +1,13 @@
 package com.sudoku;
 
-import org.apache.log4j.Logger;
+import com.sudoku.logger.ConsoleLogger;
 
 public final class Field {
-    private static final int   SIZE     = 9;
-    private static final int   CAPACITY = 320;
-    private static       Field  field;
-    private int[][]             sudokuFields = new int[SIZE][SIZE];
-    private static final Logger logger       = Logger.getLogger(Field.class);
+    private static final int SIZE     = 9;
+    private static final int CAPACITY = 320;
+    private static Field  field;
+    private int[][] sudokuFields = new int[SIZE][SIZE];
+    private static final ConsoleLogger logger = ConsoleLogger.getInstance();
 
     /**
      * hidden constructor
@@ -18,7 +18,7 @@ public final class Field {
      * singleton instance
      * @return Field instance
      */
-    public static Field getInstance(){
+    public static synchronized Field getInstance(){
         if (field == null) field = new Field();
         return field;
     }
@@ -47,8 +47,8 @@ public final class Field {
                     output.append(' ').append(arr[i]).append(" ]  [");
                 } else output.append(' ').append(arr[i]);
             }
-            logger.info(output.toString().replace("0", "*"));
-            if ((j + 1) % 3 == 0) logger.info("");
+            logger.toConsole(output.toString().replace("0", "*"));
+            if ((j + 1) % 3 == 0) logger.toConsole("");
         }
     }
 

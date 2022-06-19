@@ -1,12 +1,11 @@
 package com.sudoku.menuHandler;
 
+import com.sudoku.logger.ConsoleLogger;
 import com.sudoku.menu.Action;
-import org.apache.log4j.Logger;
 import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -32,8 +31,7 @@ public final class ActionsHandler {
                                                                    .newInstance();
                                           } catch (InstantiationException | NoSuchMethodException | SecurityException | ClassNotFoundException |
                                                   InvocationTargetException | IllegalArgumentException | IllegalAccessException e) {
-                                              Logger.getLogger(ActionsHandler.class)
-                                                    .error(e.getMessage());
+                                              ConsoleLogger.getInstance().toConsole(e.getMessage());
                                           }
                                           return null;
                                       })
@@ -41,7 +39,7 @@ public final class ActionsHandler {
         return convertList2TreeMap(actions);
     }
 
-    private static TreeMap<Integer, Action> convertList2TreeMap(List<Action> list) {
+    private static  <T extends Action> TreeMap<Integer, Action> convertList2TreeMap(List<T> list) {
         var actionTree = new TreeMap<Integer, Action>();
         for (Action action : list) {
             actionTree.put(action.id(), action);

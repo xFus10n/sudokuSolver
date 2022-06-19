@@ -3,6 +3,7 @@ package com.sudoku;
 import com.sudoku.menu.Action;
 import com.sudoku.menuHandler.ActionsHandler;
 import org.junit.jupiter.api.Test;
+
 import java.util.Map;
 
 public class MenuTest {
