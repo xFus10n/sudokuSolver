@@ -6,7 +6,7 @@ import java.util.List;
 
 public final class Field {
     public static final int FIELD_CAPACITY = 81;
-    private static final int DIM_SIZE = 9;
+    public static final int DIM_SIZE = 9;
     private static final int STRING_CAPACITY = 320;
     private static Field field;
     private int[][] sudokuFields = new int[DIM_SIZE][DIM_SIZE];
