@@ -5,7 +5,7 @@ import com.sudoku.logger.ConsoleLogger;
 import java.util.List;
 
 public final class Field {
-    public static final int FIELD_CAPACITY = 80;
+    public static final int FIELD_CAPACITY = 81;
     private static final int DIM_SIZE = 9;
     private static final int STRING_CAPACITY = 320;
     private static Field field;

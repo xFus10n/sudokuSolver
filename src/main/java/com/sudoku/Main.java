@@ -5,7 +5,7 @@ import com.sudoku.properties.Arguments;
 
 public class Main {
     public static void main(String[] args) {
-//        Arguments.setArguments(args);
+        Arguments.setArguments(args);
         var main = new Main();
         main.run();
     }

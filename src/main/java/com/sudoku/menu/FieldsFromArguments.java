@@ -17,11 +17,9 @@ public class FieldsFromArguments implements Action{
 
     @Override
     public void execute(Field sudokuField) {
-        sudokuField.resetFields();
-        var fieldCapacity = Field.FIELD_CAPACITY;
         var values = Arguments.getInstance().getValues();
-        if (values.size() < 80) {
-            int missingElements = fieldCapacity - values.size();
+        if (values.size() < Field.FIELD_CAPACITY) {
+            int missingElements = Field.FIELD_CAPACITY - values.size();
             values.addAll(Collections.nCopies(missingElements, 0));
         }
         sudokuField.setFields(values);

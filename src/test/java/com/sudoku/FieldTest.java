@@ -1,5 +1,9 @@
 package com.sudoku;
 
+import com.sudoku.menu.Action;
+import com.sudoku.menu.FieldsFromArguments;
+import com.sudoku.menu.Show;
+import com.sudoku.properties.Arguments;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,10 +45,9 @@ class FieldTest {
 
     @Test
     void testReset() {
-        var fields = Field.getInstance();
-        assertTrue(fields.setField(0, 1));
+        assertTrue(sFields.setField(0, 1));
 
-        var sudokuFields = fields.getSudokuFields();
+        var sudokuFields = sFields.getSudokuFields();
         int[][] expectedFields = { {1,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0},
                                    {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0}};
         assertArrayEquals(expectedFields, sudokuFields);
@@ -52,5 +55,41 @@ class FieldTest {
         var initialFields = new int[9][9];
         sFields.resetFields();
         assertArrayEquals(initialFields, Field.getInstance().getSudokuFields());
+    }
+
+    @Test
+    void testSetFieldsFromArguments() {
+        //assign
+        String[] inArgs = {"0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+        Arguments.setArguments(inArgs);
+        int[][] expectedFields = { {0,0,0,0,0,0,0,0,0}, {1,2,3,4,5,6,7,8,9}, {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0},
+                                   {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0}};
+
+        //act
+        Action setFields = new FieldsFromArguments();
+        setFields.execute(sFields);
+
+        //assert
+        assertArrayEquals(expectedFields, sFields.getSudokuFields());
+    }
+
+    @Test
+    void testSetFieldsFromArguments2() {
+        //assign
+        String[] inArgs = {"1", "2", "3", "4", "5", "6", "7", "8", "9","0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+                           "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9","0", "0", "0", "0", "0", "0", "0", "0", "0",
+                           "1", "2", "3", "4", "5", "6", "7", "8", "9","0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+        Arguments.setArguments(inArgs);
+        int[][] expectedFields = {{1,2,3,4,5,6,7,8,9}, {0,0,0,0,0,0,0,0,0},{1,2,3,4,5,6,7,8,9},
+                                  {0,0,0,0,0,0,0,0,0}, {1,2,3,4,5,6,7,8,9},{0,0,0,0,0,0,0,0,0},
+                                  {1,2,3,4,5,6,7,8,9}, {0,0,0,0,0,0,0,0,0},{1,2,3,4,5,6,7,8,9}};
+
+        //act
+        Action setFields = new FieldsFromArguments();
+        setFields.execute(sFields);
+
+        //assert
+        new Show().execute(sFields);
+        assertArrayEquals(expectedFields, sFields.getSudokuFields());
     }
 }
