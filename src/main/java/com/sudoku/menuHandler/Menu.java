@@ -20,7 +20,7 @@ public class Menu {
     }
 
     public void run(){
-        attachShutDownHook(scanner);
+        attachShutDownHook();
         consoleLogger.toConsole("*** Starting menu ***");
         while (true) {
             consoleLogger.toConsole("");
@@ -40,7 +40,7 @@ public class Menu {
         }
     }
 
-    public void attachShutDownHook(Scanner scanner) {
+    private void attachShutDownHook() {
         ConsoleLogger logger = ConsoleLogger.getInstance();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             scanner.close();
