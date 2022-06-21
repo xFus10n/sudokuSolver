@@ -2,7 +2,9 @@ package com.sudoku;
 
 import com.sudoku.logger.ConsoleLogger;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class Field {
     public static final int FIELD_CAPACITY = 81;
@@ -11,11 +13,13 @@ public final class Field {
     private static Field field;
     private int[][] sudokuFields = new int[DIM_SIZE][DIM_SIZE];
     private static final ConsoleLogger logger = ConsoleLogger.getInstance();
+    private Map<Integer, List<Integer>> cubeMap;
 
     /**
      * hidden constructor
      */
     private Field() {
+        cubeMap = initCubes();
     }
 
     /**
@@ -57,10 +61,6 @@ public final class Field {
             if ((j + 1) % 3 == 0) logger.toConsole("");
         }
     }
-
-//    public void setFields(int[][] fields){
-//        sudokuField = fields;
-//    }
 
     /**
      * Set sudoku field using rows and columns
@@ -108,6 +108,16 @@ public final class Field {
         return setField(row, col, value);
     }
 
+    public void showField(int position){
+        int row = position / DIM_SIZE;
+        int col = position - (row * DIM_SIZE);
+        logger.toConsole(sudokuFields[row][col] + " ", true);
+    }
+
+    public List<Integer> getCubePositions(int cubeOrder){
+        return cubeMap.getOrDefault(cubeOrder, List.of());
+    }
+
     /**
      * Set sudoku field from command line
      * use 0 as hidden value, if values < 80 all remaining are 0
@@ -124,5 +134,19 @@ public final class Field {
      */
     public void resetFields() {
         sudokuFields = new int[DIM_SIZE][DIM_SIZE];
+    }
+
+    private Map<Integer, List<Integer>> initCubes(){
+        Map<Integer, List<Integer>> cubeMap = new HashMap<>();
+        cubeMap.put(0, List.of(0,1,2,9,10,11,18,19,20));
+        cubeMap.put(1, List.of(3,4,5,12,13,14,21,22,23));
+        cubeMap.put(2, List.of(6,7,8,15,16,17,24,25,26));
+        cubeMap.put(3, List.of(27,28,29,36,37,38,45,46,47));
+        cubeMap.put(4, List.of(30,31,32,39,40,41,48,49,50));
+        cubeMap.put(5, List.of(33,34,35,42,43,44,51,52,53));
+        cubeMap.put(6, List.of(54,55,56,63,64,65,72,73,74));
+        cubeMap.put(7, List.of(57,58,59,66,67,68,75,76,77));
+        cubeMap.put(8, List.of(60,61,62,69,70,71,78,79,80));
+        return cubeMap;
     }
 }

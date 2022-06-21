@@ -3,8 +3,7 @@ package com.sudoku.menu;
 import com.sudoku.Field;
 import com.sudoku.logger.ConsoleLogger;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Validate implements Action {
     private boolean hasHiddenElements;
@@ -32,6 +31,8 @@ public class Validate implements Action {
         boolean sliceCheck = sliceCheck(sudokuField);
         ConsoleLogger.getInstance()
                      .toConsole("Slice check = " + sliceCheck);
+
+        cubeCheck(sudokuField);
     }
 
     private boolean setHasHiddenElements(Field sudokuField) {
@@ -78,7 +79,19 @@ public class Validate implements Action {
         return true;
     }
 
-    private boolean cubeCheck() {
+    private boolean cubeCheck(Field sudokuField) {
+        for (int i = 0; i < Field.DIM_SIZE; i++) {
+            for (Integer cubePosition : sudokuField.getCubePositions(i)) {
+                sudokuField.showField(cubePosition);
+            }
+            ConsoleLogger.getInstance().toConsole("");
+        }
+//        for (List<Integer> value : cubeMap.values()) {
+//            for (Integer integer : value) {
+//                sudokuField.showField(integer);
+//            }
+//            ConsoleLogger.getInstance().toConsole("");
+//        }
         return false;
     }
 }
