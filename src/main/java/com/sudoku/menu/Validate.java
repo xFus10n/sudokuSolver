@@ -21,31 +21,23 @@ public class Validate implements Action {
     @Override
     public void execute(Field sudokuField) {
         hasHiddenElements = setHasHiddenElements(sudokuField);
-        ConsoleLogger.getInstance()
-                     .toConsole("Has hidden elements = " + hasHiddenElements);
 
         boolean rowCheck = rowCheck(sudokuField);
-        ConsoleLogger.getInstance()
-                     .toConsole("Row check = " + rowCheck);
 
         boolean sliceCheck = sliceCheck(sudokuField);
-        ConsoleLogger.getInstance()
-                     .toConsole("Slice check = " + sliceCheck);
 
         boolean cubeCheck = cubeCheck(sudokuField);
-        ConsoleLogger.getInstance()
-                     .toConsole("Cube check = " + cubeCheck);
 
         boolean valid = rowCheck && sliceCheck && cubeCheck;
 
         if (hasHiddenElements) {
             if (valid) {
-                ConsoleLogger.getInstance().toConsole("Validated");
-            } else ConsoleLogger.getInstance().toConsole("Failed");
+                sudokuField.setValidatedStatus();
+            } else sudokuField.setFailedStatus();
         } else {
             if (valid) {
-                ConsoleLogger.getInstance().toConsole("Solved");
-            } else ConsoleLogger.getInstance().toConsole("Failed");
+                sudokuField.setSolvedStatus();
+            } else sudokuField.setFailedStatus();
         }
     }
 

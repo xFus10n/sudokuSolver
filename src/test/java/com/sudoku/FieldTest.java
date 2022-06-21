@@ -3,7 +3,9 @@ package com.sudoku;
 import com.sudoku.menu.Action;
 import com.sudoku.menu.FieldsFromArguments;
 import com.sudoku.menu.Show;
+import com.sudoku.menu.Validate;
 import com.sudoku.properties.Arguments;
+import com.sudoku.properties.Status;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FieldTest {
-    //solved sudoku 1 2 3 4 5 6 7 8 9 4 5 6 7 8 9 1 2 3 7 8 9 1 2 3 4 5 6 2 3 4 5 6 7 8 9 1 5 6 7 8 9 1 2 3 4 8 9 1 2 3 4 5 6 7 3 4 5 6 7 8 9 1 2 6 7 8 9 1 2 3 4 5 9 1 2 3 4 5 6 7 8
+    private String inArgsSolvedSudoku = "1 2 3 4 5 6 7 8 9 4 5 6 7 8 9 1 2 3 7 8 9 1 2 3 4 5 6 2 3 4 5 6 7 8 9 1 5 6 7 8 9 1 2 3 4 8 9 1 2 3 4 5 6 7 3 4 5 6 7 8 9 1 2 6 7 8 9 1 2 3 4 5 9 1 2 3 4 5 6 7 8";
     private static Field sFields;
 
     @BeforeAll
@@ -22,6 +24,20 @@ class FieldTest {
     @BeforeEach
     void setUp() {
         sFields.resetFields();
+    }
+
+    @Test
+    void testSolvedStatus() {
+        //assign
+        Arguments.initializeArgumentContainer(inArgsSolvedSudoku.split(" "));
+        Arguments.getInstance();
+
+        //act
+        new FieldsFromArguments().execute(sFields);
+        new Validate().execute(sFields);
+
+        //assert
+        assertEquals(Status.SOLVED, sFields.getStatus());
     }
 
     @Test
@@ -92,7 +108,6 @@ class FieldTest {
         setFields.execute(sFields);
 
         //assert
-        new Show().execute(sFields);
         assertArrayEquals(expectedFields, sFields.getSudokuFields());
     }
 }
