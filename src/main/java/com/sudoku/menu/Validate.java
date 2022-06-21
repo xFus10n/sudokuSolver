@@ -35,6 +35,18 @@ public class Validate implements Action {
         boolean cubeCheck = cubeCheck(sudokuField);
         ConsoleLogger.getInstance()
                      .toConsole("Cube check = " + cubeCheck);
+
+        boolean valid = rowCheck && sliceCheck && cubeCheck;
+
+        if (hasHiddenElements) {
+            if (valid) {
+                ConsoleLogger.getInstance().toConsole("Validated");
+            } else ConsoleLogger.getInstance().toConsole("Failed");
+        } else {
+            if (valid) {
+                ConsoleLogger.getInstance().toConsole("Solved");
+            } else ConsoleLogger.getInstance().toConsole("Failed");
+        }
     }
 
     private boolean setHasHiddenElements(Field sudokuField) {
@@ -87,6 +99,7 @@ public class Validate implements Action {
     private boolean cubeCheck(Field sudokuField) {
         Set<Integer> setOfInts = new HashSet<>();
         for (int i = 0; i < Field.DIM_SIZE; i++) {
+            setOfInts.clear();
             for (Integer cubePosition : sudokuField.getCubePositions(i)) {
                 int element = sudokuField.getField(cubePosition);
                 if (contains(setOfInts, element)) {

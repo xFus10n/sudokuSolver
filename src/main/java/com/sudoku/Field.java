@@ -1,6 +1,7 @@
 package com.sudoku;
 
 import com.sudoku.logger.ConsoleLogger;
+import com.sudoku.properties.Status;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,23 @@ public final class Field {
     private int[][] sudokuFields = new int[DIM_SIZE][DIM_SIZE];
     private static final ConsoleLogger logger = ConsoleLogger.getInstance();
     private Map<Integer, List<Integer>> cubeMap;
+    private Status status;
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setFailedStatus() {
+        status = Status.FAILED;
+    }
+
+    public void setValidatedStatus() {
+        status = Status.VALIDATED;
+    }
+
+    public void setSolvedStatus() {
+        status = Status.SOLVED;
+    }
 
     /**
      * hidden constructor
