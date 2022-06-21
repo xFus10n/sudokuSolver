@@ -2,7 +2,6 @@ package com.sudoku;
 
 import com.sudoku.menu.Action;
 import com.sudoku.menu.FieldsFromArguments;
-import com.sudoku.menu.Show;
 import com.sudoku.menu.Validate;
 import com.sudoku.properties.Arguments;
 import com.sudoku.properties.Status;
@@ -53,6 +52,21 @@ class FieldTest {
 
         //assert
         assertEquals(Status.VALIDATED, sFields.getStatus());
+    }
+
+    @Test
+    void testFailedStatus() {
+        //assign
+        Arguments.initializeArgumentContainer(inArgsSolvedSudoku.split(" "));
+        Arguments.getInstance();
+
+        //act
+        new FieldsFromArguments().execute(sFields);
+        sFields.setField(80, 9);
+        new Validate().execute(sFields);
+
+        //assert
+        assertEquals(Status.FAILED, sFields.getStatus());
     }
 
     @Test
