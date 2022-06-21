@@ -32,7 +32,9 @@ public class Validate implements Action {
         ConsoleLogger.getInstance()
                      .toConsole("Slice check = " + sliceCheck);
 
-        cubeCheck(sudokuField);
+        boolean cubeCheck = cubeCheck(sudokuField);
+        ConsoleLogger.getInstance()
+                     .toConsole("Cube check = " + cubeCheck);
     }
 
     private boolean setHasHiddenElements(Field sudokuField) {
@@ -52,10 +54,8 @@ public class Validate implements Action {
         for (int[] row : sudokuField.getSudokuFields()) {
             setOfInts.clear();
             for (int element : row) {
-                if (element != 0) {
-                    if (!setOfInts.add(element)) {
-                        return false;
-                    }
+                if (contains(setOfInts, element)) {
+                    return false;
                 }
             }
         }
@@ -69,29 +69,31 @@ public class Validate implements Action {
             setOfInts.clear();
             for (int row = 0; row < sudokuFields[col].length; row++) {
                 int element = sudokuFields[row][col];
-                if (element != 0) {
-                    if (!setOfInts.add(element)) {
-                        return false;
-                    }
+                if (contains(setOfInts, element)) {
+                    return false;
                 }
             }
         }
         return true;
     }
 
+    private boolean contains(Set<Integer> setOfInts, int element) {
+        if (element != 0) {
+            return !setOfInts.add(element);
+        }
+        return false;
+    }
+
     private boolean cubeCheck(Field sudokuField) {
+        Set<Integer> setOfInts = new HashSet<>();
         for (int i = 0; i < Field.DIM_SIZE; i++) {
             for (Integer cubePosition : sudokuField.getCubePositions(i)) {
-                sudokuField.showField(cubePosition);
+                int element = sudokuField.getField(cubePosition);
+                if (contains(setOfInts, element)) {
+                    return false;
+                }
             }
-            ConsoleLogger.getInstance().toConsole("");
         }
-//        for (List<Integer> value : cubeMap.values()) {
-//            for (Integer integer : value) {
-//                sudokuField.showField(integer);
-//            }
-//            ConsoleLogger.getInstance().toConsole("");
-//        }
-        return false;
+        return true;
     }
 }

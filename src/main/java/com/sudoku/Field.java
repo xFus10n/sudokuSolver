@@ -108,10 +108,10 @@ public final class Field {
         return setField(row, col, value);
     }
 
-    public void showField(int position){
+    public int getField(int position){
         int row = position / DIM_SIZE;
         int col = position - (row * DIM_SIZE);
-        logger.toConsole(sudokuFields[row][col] + " ", true);
+        return sudokuFields[row][col];
     }
 
     public List<Integer> getCubePositions(int cubeOrder){
