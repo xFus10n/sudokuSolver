@@ -10,8 +10,9 @@ import java.util.Map;
 public final class Field {
     public static final int FIELD_CAPACITY = 81;
     public static final int DIM_SIZE = 9;
-    private static final int STRING_CAPACITY = 320;
-    private static Field field;
+    private static final int STRING_CAPACITY          = 320;
+    private static final int SOLVABLE_AMOUNT_ELEMENTS = 17;
+    private static Field     field;
     private int[][] sudokuFields = new int[DIM_SIZE][DIM_SIZE];
     private static final ConsoleLogger logger = ConsoleLogger.getInstance();
     private Map<Integer, List<Integer>> cubeMap;
@@ -154,7 +155,20 @@ public final class Field {
         sudokuFields = new int[DIM_SIZE][DIM_SIZE];
     }
 
-    private Map<Integer, List<Integer>> initCubes(){
+    public boolean solvable() {
+        int count = 0;
+        for (int[] sudokuField : sudokuFields) {
+            for (int i : sudokuField) {
+                if (0 == i)
+                    count++;
+            }
+            if (FIELD_CAPACITY - count < SOLVABLE_AMOUNT_ELEMENTS) return false;
+        }
+        return true;
+    }
+
+
+        private Map<Integer, List<Integer>> initCubes(){
         Map<Integer, List<Integer>> cubeMap = new HashMap<>();
         cubeMap.put(0, List.of(0,1,2,9,10,11,18,19,20));
         cubeMap.put(1, List.of(3,4,5,12,13,14,21,22,23));
