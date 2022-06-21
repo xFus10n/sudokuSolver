@@ -3,6 +3,9 @@ package com.sudoku.menu;
 import com.sudoku.Field;
 import com.sudoku.logger.ConsoleLogger;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Validate implements Action {
     private boolean hasHiddenElements;
 
@@ -20,6 +23,9 @@ public class Validate implements Action {
     public void execute(Field sudokuField) {
         hasHiddenElements = setHasHiddenElements(sudokuField);
         ConsoleLogger.getInstance().toConsole("Has hidden elements = " + hasHiddenElements);
+
+        boolean rowCheck = rowCheck(sudokuField);
+        ConsoleLogger.getInstance().toConsole("Row check = " + rowCheck);
     }
 
     private boolean setHasHiddenElements(Field sudokuField){
@@ -32,8 +38,17 @@ public class Validate implements Action {
         return false;
     }
 
-    private boolean rowCheck(){
-        return false;
+    private boolean rowCheck(Field sudokuField){
+        Set<Integer> setOfInts = new HashSet<>();
+        for (int[] row : sudokuField.getSudokuFields()) {
+            setOfInts.clear();
+            for (int element : row) {
+                if (element != 0) {
+                    if (!setOfInts.add(element)) return false;
+                }
+            }
+        }
+        return true;
     }
 
     private boolean sliceCheck(){
