@@ -6,7 +6,6 @@ import com.sudoku.logger.ConsoleLogger;
 import java.util.*;
 
 public class Validate implements Action {
-    private boolean hasHiddenElements;
 
     @Override
     public int id() {
@@ -20,14 +19,11 @@ public class Validate implements Action {
 
     @Override
     public void execute(Field sudokuField) {
-        hasHiddenElements = setHasHiddenElements(sudokuField);
 
+        boolean hasHiddenElements = setHasHiddenElements(sudokuField);
         boolean rowCheck = rowCheck(sudokuField);
-
         boolean sliceCheck = sliceCheck(sudokuField);
-
         boolean cubeCheck = cubeCheck(sudokuField);
-
         boolean valid = rowCheck && sliceCheck && cubeCheck;
 
         if (hasHiddenElements) {
@@ -39,6 +35,7 @@ public class Validate implements Action {
                 sudokuField.setSolvedStatus();
             } else sudokuField.setFailedStatus();
         }
+        ConsoleLogger.getInstance().toConsole("sudoku fields status is : " + sudokuField.getStatus());
     }
 
     private boolean setHasHiddenElements(Field sudokuField) {
