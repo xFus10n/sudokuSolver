@@ -41,6 +41,21 @@ class FieldTest {
     }
 
     @Test
+    void testValidatedStatus() {
+        //assign
+        Arguments.initializeArgumentContainer(inArgsSolvedSudoku.split(" "));
+        Arguments.getInstance();
+
+        //act
+        new FieldsFromArguments().execute(sFields);
+        sFields.setField(80, 0);
+        new Validate().execute(sFields);
+
+        //assert
+        assertEquals(Status.VALIDATED, sFields.getStatus());
+    }
+
+    @Test
     void sudokuFieldsShouldBeAllZeros() {
         var fields = Field.getInstance();
         var sudokuFields = fields.getSudokuFields();
