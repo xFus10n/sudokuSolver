@@ -17,10 +17,12 @@ public final class Field {
     private static final int                         SOLVABLE_AMOUNT_ELEMENTS = 17;
     private static       Field                       field;
     private              int[][]                     sudokuFields             = new int[DIM_SIZE][DIM_SIZE];
-    private static final ConsoleLogger               logger                   = ConsoleLogger.getInstance();
-    private              Map<Integer, List<Integer>> cubeMap;
+    private static final ConsoleLogger               logger  = ConsoleLogger.getInstance();
+    private static final Map<Integer, List<Integer>> cubeMap = initCubes();
+    private static final Map<Integer, List<Integer>> rowMap = initRows();
     private              Status                      status;
     private final        DataHolder                  candidatesHolder         = new DataHolder();
+
 
     public Status getStatus() {
         return status;
@@ -42,7 +44,6 @@ public final class Field {
      * hidden constructor
      */
     private Field() {
-        cubeMap = initCubes();
         scanner = new Scanner(System.in);
         attachShutDownHook();
     }
@@ -120,7 +121,7 @@ public final class Field {
             return false;
         }
         try {
-            candidatesHolder.setPositionCandidates(originalPosition, List.of(value));
+            candidatesHolder.setPositionOwner(originalPosition, value, row, col, getCubeIDbyPosition(originalPosition));
             sudokuFields[row][col] = value;
         } catch (Exception e) {
             return false;
@@ -161,6 +162,10 @@ public final class Field {
 
     public List<Integer> getCubePositions(int cubeOrder) {
         return cubeMap.getOrDefault(cubeOrder, List.of());
+    }
+
+    public List<Integer> getRowPositions(int rowOrder) {
+        return rowMap.getOrDefault(rowOrder, List.of());
     }
 
     /**
@@ -205,18 +210,39 @@ public final class Field {
      *
      * @return map of cubes with positions
      */
-    private Map<Integer, List<Integer>> initCubes() {
-        Map<Integer, List<Integer>> cubeMap = new HashMap<>();
-        cubeMap.put(0, List.of(0, 1, 2, 9, 10, 11, 18, 19, 20));
-        cubeMap.put(1, List.of(3, 4, 5, 12, 13, 14, 21, 22, 23));
-        cubeMap.put(2, List.of(6, 7, 8, 15, 16, 17, 24, 25, 26));
-        cubeMap.put(3, List.of(27, 28, 29, 36, 37, 38, 45, 46, 47));
-        cubeMap.put(4, List.of(30, 31, 32, 39, 40, 41, 48, 49, 50));
-        cubeMap.put(5, List.of(33, 34, 35, 42, 43, 44, 51, 52, 53));
-        cubeMap.put(6, List.of(54, 55, 56, 63, 64, 65, 72, 73, 74));
-        cubeMap.put(7, List.of(57, 58, 59, 66, 67, 68, 75, 76, 77));
-        cubeMap.put(8, List.of(60, 61, 62, 69, 70, 71, 78, 79, 80));
-        return cubeMap;
+    private static Map<Integer, List<Integer>> initCubes() {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        map.put(0, List.of(0, 1, 2, 9, 10, 11, 18, 19, 20));
+        map.put(1, List.of(3, 4, 5, 12, 13, 14, 21, 22, 23));
+        map.put(2, List.of(6, 7, 8, 15, 16, 17, 24, 25, 26));
+        map.put(3, List.of(27, 28, 29, 36, 37, 38, 45, 46, 47));
+        map.put(4, List.of(30, 31, 32, 39, 40, 41, 48, 49, 50));
+        map.put(5, List.of(33, 34, 35, 42, 43, 44, 51, 52, 53));
+        map.put(6, List.of(54, 55, 56, 63, 64, 65, 72, 73, 74));
+        map.put(7, List.of(57, 58, 59, 66, 67, 68, 75, 76, 77));
+        map.put(8, List.of(60, 61, 62, 69, 70, 71, 78, 79, 80));
+        return map;
+    }
+
+    private static Map<Integer, List<Integer>> initRows() {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        map.put(0, List.of(0, 1, 2, 3, 4, 5, 6, 7, 8));
+        map.put(1, List.of(9, 10, 11, 12, 13, 14, 15, 16, 17));
+        map.put(2, List.of(18, 19, 20, 21, 22, 23, 24, 25, 26));
+        map.put(3, List.of(27, 28, 29, 30, 31, 32, 33, 34, 35));
+        map.put(4, List.of(36, 37, 38, 39, 40, 41, 42, 43, 44));
+        map.put(5, List.of(45, 46, 47, 48, 49, 50, 51, 52, 53));
+        map.put(6, List.of(54, 55, 56, 57, 58, 59, 60, 61, 62));
+        map.put(7, List.of(63, 64, 65, 66, 67, 68, 69, 70, 71));
+        map.put(8, List.of(72, 73, 74, 75, 76, 77, 78, 79, 80));
+        return map;
+    }
+
+    private static int getCubeIDbyPosition(int pos) {
+        for (Map.Entry<Integer, List<Integer>> entry : cubeMap.entrySet()) {
+            if (entry.getValue().contains(pos)) return entry.getKey();
+        }
+        return -1;
     }
 
     public static void printPositionHelp() {

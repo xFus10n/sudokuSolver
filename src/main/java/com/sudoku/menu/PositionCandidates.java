@@ -35,8 +35,10 @@ public class PositionCandidates implements Action{
 
             List<Integer> candidates = sField.getCandidates(pos);
             logger.toConsole("Candidates for position : ", true);
-            logger.toConsole(candidates.toString());
             //todo: impl
+
+            logger.toConsole(candidates.toString());
+
         } catch (Exception e) {
             logger.toConsole(e.getMessage());
             scanner.close();
