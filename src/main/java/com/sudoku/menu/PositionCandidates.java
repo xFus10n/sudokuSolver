@@ -3,6 +3,7 @@ package com.sudoku.menu;
 import com.sudoku.Field;
 import com.sudoku.logger.ConsoleLogger;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class PositionCandidates implements Action{
@@ -31,6 +32,10 @@ public class PositionCandidates implements Action{
             }
             int fieldValue = sField.getField(pos);
             logger.toConsole("Position value is = " + fieldValue);
+
+            List<Integer> candidates = sField.getCandidates(pos);
+            logger.toConsole("Candidates for position : ", true);
+            logger.toConsole(candidates.toString());
             //todo: impl
         } catch (Exception e) {
             logger.toConsole(e.getMessage());

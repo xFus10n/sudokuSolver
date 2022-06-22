@@ -1,5 +1,6 @@
 package com.sudoku;
 
+import com.sudoku.dataholder.DataHolder;
 import com.sudoku.logger.ConsoleLogger;
 import com.sudoku.properties.Status;
 
@@ -19,6 +20,7 @@ public final class Field {
     private static final ConsoleLogger               logger                   = ConsoleLogger.getInstance();
     private              Map<Integer, List<Integer>> cubeMap;
     private              Status                      status;
+    private final        DataHolder                  candidatesHolder         = new DataHolder();
 
     public Status getStatus() {
         return status;
@@ -107,7 +109,7 @@ public final class Field {
      * @param value value from 0 to 9 where 0 is hidden value
      * @return true if set was successful
      */
-    private boolean setField(int row, int col, int value) {
+    private boolean setField(int row, int col, int value, int originalPosition) {
         if (row < 0 || row >= DIM_SIZE) {
             return false;
         }
@@ -118,6 +120,7 @@ public final class Field {
             return false;
         }
         try {
+            candidatesHolder.setPositionCandidates(originalPosition, List.of(value));
             sudokuFields[row][col] = value;
         } catch (Exception e) {
             return false;
@@ -147,7 +150,7 @@ public final class Field {
     public boolean setField(int position, int value) {
         int row = position / DIM_SIZE;
         int col = position - (row * DIM_SIZE);
-        return setField(row, col, value);
+        return setField(row, col, value, position);
     }
 
     public int getField(int position) {
@@ -175,6 +178,7 @@ public final class Field {
      */
     public void resetFields() {
         sudokuFields = new int[DIM_SIZE][DIM_SIZE];
+        candidatesHolder.reset();
     }
 
     public boolean solvable() {
@@ -192,8 +196,13 @@ public final class Field {
         return true;
     }
 
+    public List<Integer> getCandidates(int position) {
+        return candidatesHolder.getPositionCandidates(position);
+    }
+
     /**
      * Position of 9 sub fields that should contain unique numbers
+     *
      * @return map of cubes with positions
      */
     private Map<Integer, List<Integer>> initCubes() {
@@ -229,9 +238,10 @@ public final class Field {
     }
 
     private void attachShutDownHook() {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            scanner.close();
-            logger.toConsole("application shutdown");
-        }));
+        Runtime.getRuntime()
+               .addShutdownHook(new Thread(() -> {
+                   scanner.close();
+                   logger.toConsole("application shutdown");
+               }));
     }
 }
