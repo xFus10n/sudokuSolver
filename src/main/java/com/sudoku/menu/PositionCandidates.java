@@ -20,11 +20,18 @@ public class PositionCandidates implements Action{
     public void execute(Field sudokuField) {
         ConsoleLogger logger = ConsoleLogger.getInstance();
         Field.printPositionHelp();
-        Scanner scanner = Field.getInstance().getScanner();
+        Field sField = Field.getInstance();
+        Scanner scanner = sField.getScanner();
         try {
             logger.toConsole("Enter position: ", true);
             int pos = scanner.nextInt();
-
+            if (pos< 0 || pos > Field.FIELD_CAPACITY - 1) {
+                logger.toConsole("Accepted values range are 0 ... 80");
+                return;
+            }
+            int fieldValue = sField.getField(pos);
+            logger.toConsole("Position value is = " + fieldValue);
+            //todo: impl
         } catch (Exception e) {
             logger.toConsole(e.getMessage());
             scanner.close();
