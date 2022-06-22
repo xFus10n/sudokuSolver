@@ -5,10 +5,10 @@ import com.sudoku.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class DataHolder {
+public class CandidatesDataHolder {
     private final Map<Integer, List<Integer>> positionCandidates;
 
-    public DataHolder() {
+    public CandidatesDataHolder() {
         positionCandidates = initPositions();
     }
 
@@ -30,38 +30,38 @@ public class DataHolder {
         return positionCandidates.getOrDefault(pos, Arrays.asList());
     }
 
-    public void setPositionOwner(int pos, int owner, int row, int col, int cube){
-        Field sField = Field.getInstance();
-        int previousOwner = sField.getField(pos);
-        if (previousOwner == owner) return;
+    public void setPositionOwner(int currentPosition, int newOwner, int rowNumber, int colNumber, int cubeNumber){
+        Field sudokuField = Field.getInstance();
+        int previousOwner = sudokuField.getField(currentPosition);
+        if (previousOwner == newOwner) return;
 
-        if (owner == 0) {
-            positionCandidates.replace(pos, Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+        if (newOwner == 0) {
+            positionCandidates.replace(currentPosition, Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9)); //put initial list, later filter
         } else {
-            positionCandidates.replace(pos, Arrays.asList(owner));
+            positionCandidates.replace(currentPosition, Arrays.asList(newOwner));
         }
 
-        reduceRowsCandidates(pos, owner, row, sField, previousOwner);
+        reduceRowsCandidates(currentPosition, newOwner, rowNumber, sudokuField, previousOwner);
         //reduce slice candidates
         //reduce cube candidates
     }
 
-    private void reduceRowsCandidates(int pos, int owner, int row, Field sField, int previousOwner) {
-        //reduce row candidates
-        List<Integer> rowPositions = sField.getRowPositions(row);
-        if (owner == 0) {
-            List<Integer>filter = appendCandidate(pos, previousOwner, rowPositions);
-            removeCandidates(filter, pos);
+    private void reduceRowsCandidates(int currentPosition, int newOwner, int rowNumber, Field sudokuField, int previousOwner) {
+        List<Integer> rowPositions = sudokuField.getRowPositions(rowNumber);
+        if (newOwner == 0) {
+            List<Integer>filter = appendCandidate(currentPosition, previousOwner, rowPositions); //previous owner becomes a candidate for all positions in a row
+            removeCertainCandidates(filter, currentPosition);
         } else {
+            //remove candidates of new owner for all positions in a row
             for (Integer position : rowPositions) {
-                if (position != pos) {
+                if (position != currentPosition) {
                     List<Integer> values = positionCandidates.getOrDefault(position, Arrays.asList());
-                    List<Integer> reducedValues = values.stream().filter(x -> x != owner).collect(Collectors.toList());
+                    List<Integer> reducedValues = values.stream().filter(x -> x != newOwner).collect(Collectors.toList());
                     positionCandidates.replace(position, reducedValues);
                 }
             }
             if (previousOwner != 0) {
-                appendCandidate(pos, previousOwner, rowPositions);
+                appendCandidate(currentPosition, previousOwner, rowPositions);
             }
         }
     }
@@ -84,7 +84,13 @@ public class DataHolder {
         return valuesToFilterOut;
     }
 
-    private void removeCandidates(List<Integer> filter, int pos) {
+    /**
+     * Values in a row that has only one candidate for particular position
+     * should be removed as a candidates for newly reset position
+     * @param filter List of values for removal
+     * @param pos reset position
+     */
+    private void removeCertainCandidates(List<Integer> filter, int pos) {
         List<Integer> values = makeMutable(positionCandidates.get(pos));
         values.removeAll(filter);
         positionCandidates.replace(pos, values);

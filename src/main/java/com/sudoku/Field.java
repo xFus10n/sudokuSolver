@@ -1,6 +1,6 @@
 package com.sudoku;
 
-import com.sudoku.dataholder.DataHolder;
+import com.sudoku.dataholder.CandidatesDataHolder;
 import com.sudoku.logger.ConsoleLogger;
 import com.sudoku.properties.Status;
 
@@ -20,8 +20,8 @@ public final class Field {
     private static final ConsoleLogger               logger  = ConsoleLogger.getInstance();
     private static final Map<Integer, List<Integer>> cubeMap = initCubes();
     private static final Map<Integer, List<Integer>> rowMap = initRows();
-    private              Status                      status;
-    private final        DataHolder                  candidatesHolder         = new DataHolder();
+    private       Status               status;
+    private final CandidatesDataHolder candidatesHolder = new CandidatesDataHolder();
 
 
     public Status getStatus() {
