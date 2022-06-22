@@ -11,12 +11,14 @@ public class Solve implements Action{
 
     @Override
     public String name() {
-        return "solve sudoku puzzle";
+        return "solve sudoku puzzle (in dev)";
     }
 
     @Override
     public void execute(Field sudokuField) {
         boolean solvable = sudokuField.solvable();
         ConsoleLogger.getInstance().toConsole("Sudoku is solvable = " + solvable);
+        //todo: implement
+
     }
 }
