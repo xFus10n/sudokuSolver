@@ -1,6 +1,7 @@
 package com.sudoku;
 
 import com.sudoku.dataholder.CandidatesDataHolder;
+import com.sudoku.dataholder.OwnerAPI;
 import com.sudoku.logger.ConsoleLogger;
 import com.sudoku.properties.Status;
 
@@ -107,22 +108,23 @@ public final class Field {
      *
      * @param row   row number with zero base
      * @param col   column number with base zero
-     * @param value value from 0 to 9 where 0 is hidden value
+     * @param newValue value from 0 to 9 where 0 is hidden value
      * @return true if set was successful
      */
-    private boolean setField(int row, int col, int value, int originalPosition) {
+    private boolean setField(int row, int col, int newValue, int currentPosition) {
         if (row < 0 || row >= DIM_SIZE) {
             return false;
         }
         if (col < 0 || col >= DIM_SIZE) {
             return false;
         }
-        if (value < 0 || value > DIM_SIZE) {
+        if (newValue < 0 || newValue > DIM_SIZE) {
             return false;
         }
         try {
-            candidatesHolder.setPositionOwner(originalPosition, value, row, col, getCubeIDbyPosition(originalPosition));
-            sudokuFields[row][col] = value;
+            OwnerAPI api = new OwnerAPI(currentPosition, newValue, getField(currentPosition), row, col, getCubeIDbyPosition(currentPosition));
+            candidatesHolder.setPositionOwner(api);
+            sudokuFields[row][col] = newValue;
         } catch (Exception e) {
             return false;
         }
