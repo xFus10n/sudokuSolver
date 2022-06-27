@@ -24,6 +24,9 @@ public final class Field {
     private       Status               status;
     private final CandidatesDataHolder candidatesHolder = new CandidatesDataHolder();
 
+    public boolean isDefined(int position){
+        return getField(position) != 0;
+    }
 
     public Status getStatus() {
         return status;

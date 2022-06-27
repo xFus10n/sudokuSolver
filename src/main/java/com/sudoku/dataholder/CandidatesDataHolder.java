@@ -17,7 +17,7 @@ public class CandidatesDataHolder {
 
     private List<CandidatesCheck> initReducers(){
         List<CandidatesCheck> reducers = new ArrayList<>();
-        reducers.add(new ReduceRowsCandidates(positionCandidates));
+        reducers.add(new ReduceRowsCandidates());
         return reducers;
     }
 
@@ -48,7 +48,7 @@ public class CandidatesDataHolder {
         }
 
         for (CandidatesCheck reducer : reducers) {
-            reducer.checkCandidates(ownerAPI);
+            reducer.checkCandidates(ownerAPI, positionCandidates);
         }
         //reduce slice candidates
         //reduce cube candidates

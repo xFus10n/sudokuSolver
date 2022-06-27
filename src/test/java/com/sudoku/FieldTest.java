@@ -160,14 +160,12 @@ class FieldTest {
         assertArrayEquals(List.of(8).toArray(), actCandidates7.toArray());
 
         sFields.setField(7, 0);
-
-        new Show().execute(sFields);
-        System.out.println(actCandidates8);
-        System.out.println(actCandidates7);
+        actCandidates8 = sFields.getCandidates(8);
+        actCandidates7 = sFields.getCandidates(7);
 
         //assert
         assertArrayEquals(List.of(8, 9).toArray(), actCandidates8.toArray());
-        assertArrayEquals(List.of(8, 8).toArray(), actCandidates7.toArray());
+        assertArrayEquals(List.of(8, 9).toArray(), actCandidates7.toArray());
     }
 
     @Test

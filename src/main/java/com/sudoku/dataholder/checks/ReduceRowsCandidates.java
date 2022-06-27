@@ -9,46 +9,53 @@ import java.util.stream.Collectors;
 import static com.sudoku.dataholder.Utilz.makeMutable;
 
 public class ReduceRowsCandidates implements CandidatesCheck{
-    private final Map<Integer, List<Integer>> positionCandidates;
+    private Map<Integer, List<Integer>> positionCandidates;
 
-    public ReduceRowsCandidates(Map<Integer, List<Integer>> positionCandidates) {
-        this.positionCandidates = positionCandidates;
+    private void initPositionCandidates(Map<Integer, List<Integer>> candidatesMap) {
+        positionCandidates = candidatesMap;
     }
 
     @Override
-    public void checkCandidates(OwnerAPI ownerAPI) {
+    public void checkCandidates(OwnerAPI ownerAPI, Map<Integer, List<Integer>> candidatesMap) {
+        initPositionCandidates(candidatesMap);
         List<Integer> rowPositions = Field.getInstance().getRowPositions(ownerAPI.getRowNumber()); //todo: can be extracted
+        if (ownerAPI.getPreviousOwner() != 0) appendCandidate(ownerAPI.getCurrentPosition(), ownerAPI.getPreviousOwner(), rowPositions);
         if (ownerAPI.getNewOwner() == 0) {
-            List<Integer>filter = appendCandidate(ownerAPI.getCurrentPosition(), ownerAPI.getPreviousOwner(), rowPositions); //previous owner becomes a candidate for all positions in a row
+            List<Integer>filter = getFilterValues(ownerAPI.getCurrentPosition(), ownerAPI.getPreviousOwner(), rowPositions); //previous owner becomes a candidate for all positions in a row
             removeCertainCandidates(filter, ownerAPI.getCurrentPosition());
         } else {
             //remove candidates of new owner for all positions in a row
             for (Integer position : rowPositions) {
                 if (position != ownerAPI.getCurrentPosition()) {
-                    List<Integer> values = positionCandidates.getOrDefault(position, Arrays.asList());
+                    List<Integer> values = candidatesMap.getOrDefault(position, Arrays.asList());
                     List<Integer> reducedValues = values.stream().filter(x -> x != ownerAPI.getNewOwner()).collect(Collectors.toList());
-                    positionCandidates.replace(position, reducedValues);
+                    candidatesMap.replace(position, reducedValues);
                 }
-            }
-            if (ownerAPI.getPreviousOwner() != 0) {
-                appendCandidate(ownerAPI.getCurrentPosition(), ownerAPI.getPreviousOwner(), rowPositions);
             }
         }
     }
 
-    private List<Integer> appendCandidate(int pos, int previousOwner, List<Integer> rowPositions) {
-        List<Integer> valuesToFilterOut = new ArrayList<>(); //on reset position
+    private void appendCandidate(int previousOwnerPosition, int previousOwner, List<Integer> rowPositions) {
+        Field sField = Field.getInstance();
         for (Integer position : rowPositions) {
-            if (position != pos) {
-                List<Integer> values = positionCandidates.getOrDefault(position, Arrays.asList());
-                if (values.size() == 1) {
-                    valuesToFilterOut.add(values.get(0));
-                } else {
-                    /* only for uncertain positions */
+            if (position != previousOwnerPosition) {
+                if (!sField.isDefined(position)) {
+                    List<Integer> values = positionCandidates.getOrDefault(position, Arrays.asList());
                     values.add(previousOwner);
                     Collections.sort(values);
                     positionCandidates.replace(position, values);
                 }
+            }
+        }
+    }
+
+    private List<Integer> getFilterValues(int previousOwnerPosition, int previousOwner, List<Integer> rowPositions) {
+        Field sField = Field.getInstance();
+        List<Integer> valuesToFilterOut = new ArrayList<>();
+        for (Integer position : rowPositions) {
+            if ((position != previousOwnerPosition) && (sField.isDefined(position))) {
+                List<Integer> values = positionCandidates.getOrDefault(position, Arrays.asList());
+                valuesToFilterOut.add(values.get(0));
             }
         }
         return valuesToFilterOut;
