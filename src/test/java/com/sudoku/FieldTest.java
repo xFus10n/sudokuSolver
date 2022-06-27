@@ -142,6 +142,35 @@ class FieldTest {
     }
 
     @Test
+    void testRowsCandidatesCalculation2() {
+        //assign
+        String[] inArgs = {"1", "2", "3", "4", "5", "6", "7", "8"};
+        Arguments.initializeArgumentContainer(inArgs);
+        Arguments.getInstance();
+
+        //act
+        Action setFields = new FieldsFromArguments();
+        setFields.execute(sFields);
+
+        List<Integer> actCandidates8 = sFields.getCandidates(8);
+        List<Integer> actCandidates7 = sFields.getCandidates(7);
+
+        //assert
+        assertArrayEquals(List.of(9).toArray(), actCandidates8.toArray());
+        assertArrayEquals(List.of(8).toArray(), actCandidates7.toArray());
+
+        sFields.setField(7, 0);
+
+        new Show().execute(sFields);
+        System.out.println(actCandidates8);
+        System.out.println(actCandidates7);
+
+        //assert
+        assertArrayEquals(List.of(8, 9).toArray(), actCandidates8.toArray());
+        assertArrayEquals(List.of(8, 8).toArray(), actCandidates7.toArray());
+    }
+
+    @Test
     void testRowsCandidatesCalculation() {
         //assign
         String[] inArgs = {"1", "2", "3", "4", "5", "6"};

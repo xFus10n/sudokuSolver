@@ -1,15 +1,24 @@
 package com.sudoku.dataholder;
 
 import com.sudoku.Field;
+import com.sudoku.dataholder.checks.CandidatesCheck;
+import com.sudoku.dataholder.checks.ReduceRowsCandidates;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CandidatesDataHolder {
     private final Map<Integer, List<Integer>> positionCandidates;
+    private final List<CandidatesCheck> reducers;
 
     public CandidatesDataHolder() {
         positionCandidates = initPositions();
+        reducers = initReducers();
+    }
+
+    private List<CandidatesCheck> initReducers(){
+        List<CandidatesCheck> reducers = new ArrayList<>();
+        reducers.add(new ReduceRowsCandidates(positionCandidates));
+        return reducers;
     }
 
     private Map<Integer, List<Integer>> initPositions() {
@@ -38,62 +47,10 @@ public class CandidatesDataHolder {
             positionCandidates.replace(ownerAPI.currentPosition, Arrays.asList(ownerAPI.newOwner));
         }
 
-        reduceRowsCandidates(ownerAPI);
+        for (CandidatesCheck reducer : reducers) {
+            reducer.checkCandidates(ownerAPI);
+        }
         //reduce slice candidates
         //reduce cube candidates
-    }
-
-    private void reduceRowsCandidates(OwnerAPI ownerAPI) {
-        List<Integer> rowPositions = Field.getInstance().getRowPositions(ownerAPI.rowNumber); //todo: can be extracted
-        if (ownerAPI.newOwner == 0) {
-            List<Integer>filter = appendCandidate(ownerAPI.currentPosition, ownerAPI.previousOwner, rowPositions); //previous owner becomes a candidate for all positions in a row
-            removeCertainCandidates(filter, ownerAPI.currentPosition);
-        } else {
-            //remove candidates of new owner for all positions in a row
-            for (Integer position : rowPositions) {
-                if (position != ownerAPI.currentPosition) {
-                    List<Integer> values = positionCandidates.getOrDefault(position, Arrays.asList());
-                    List<Integer> reducedValues = values.stream().filter(x -> x != ownerAPI.newOwner).collect(Collectors.toList());
-                    positionCandidates.replace(position, reducedValues);
-                }
-            }
-            if (ownerAPI.previousOwner != 0) {
-                appendCandidate(ownerAPI.currentPosition, ownerAPI.previousOwner, rowPositions);
-            }
-        }
-    }
-
-    private List<Integer> appendCandidate(int pos, int previousOwner, List<Integer> rowPositions) {
-        List<Integer> valuesToFilterOut = new ArrayList<>(); //on reset position
-        for (Integer position : rowPositions) {
-            if (position != pos) {
-                List<Integer> values = positionCandidates.getOrDefault(position, Arrays.asList());
-                if (values.size() == 1) {
-                    valuesToFilterOut.add(values.get(0));
-                } else {
-                    /* only for uncertain positions */
-                    values.add(previousOwner);
-                    Collections.sort(values);
-                    positionCandidates.replace(position, values);
-                }
-            }
-        }
-        return valuesToFilterOut;
-    }
-
-    /**
-     * Values in a row that has only one candidate for particular position
-     * should be removed as a candidates for newly reset position
-     * @param filter List of values for removal
-     * @param pos reset position
-     */
-    private void removeCertainCandidates(List<Integer> filter, int pos) {
-        List<Integer> values = makeMutable(positionCandidates.get(pos));
-        values.removeAll(filter);
-        positionCandidates.replace(pos, values);
-    }
-
-    private <T> ArrayList<T> makeMutable(List<T> inList){
-        return new ArrayList<>(inList);
     }
 }
