@@ -18,7 +18,8 @@ public class ReduceRowsCandidates implements CandidatesCheck{
     @Override
     public void checkCandidates(OwnerAPI ownerAPI, Map<Integer, List<Integer>> candidatesMap) {
         initPositionCandidates(candidatesMap);
-        List<Integer> rowPositions = Field.getInstance().getRowPositions(ownerAPI.getRowNumber()); //todo: can be extracted
+        Field sField = Field.getInstance();
+        List<Integer> rowPositions = sField.getRowPositions(ownerAPI.getRowNumber()); //todo: can be extracted
         if (ownerAPI.getPreviousOwner() != 0) appendCandidate(ownerAPI.getCurrentPosition(), ownerAPI.getPreviousOwner(), rowPositions);
         if (ownerAPI.getNewOwner() == 0) {
             List<Integer>filter = getFilterValues(ownerAPI.getCurrentPosition(), ownerAPI.getPreviousOwner(), rowPositions); //previous owner becomes a candidate for all positions in a row
@@ -26,7 +27,7 @@ public class ReduceRowsCandidates implements CandidatesCheck{
         } else {
             //remove candidates of new owner for all positions in a row
             for (Integer position : rowPositions) {
-                if (position != ownerAPI.getCurrentPosition()) {
+                if (position != ownerAPI.getCurrentPosition() && !sField.isDefined(position)) {
                     List<Integer> values = candidatesMap.getOrDefault(position, Arrays.asList());
                     List<Integer> reducedValues = values.stream().filter(x -> x != ownerAPI.getNewOwner()).collect(Collectors.toList());
                     candidatesMap.replace(position, reducedValues);
