@@ -3,6 +3,7 @@ package com.sudoku.dataholder;
 import com.sudoku.Field;
 import com.sudoku.dataholder.checks.CandidatesCheck;
 import com.sudoku.dataholder.checks.ReduceRowsCandidates;
+import com.sudoku.dataholder.checks.ReduceSliceCandidates;
 
 import java.util.*;
 
@@ -18,6 +19,7 @@ public class CandidatesDataHolder {
     private List<CandidatesCheck> initReducers(){
         List<CandidatesCheck> reducers = new ArrayList<>();
         reducers.add(new ReduceRowsCandidates());
+        reducers.add(new ReduceSliceCandidates());
         return reducers;
     }
 
@@ -50,7 +52,6 @@ public class CandidatesDataHolder {
         for (CandidatesCheck reducer : reducers) {
             reducer.checkCandidates(ownerAPI, positionCandidates);
         }
-        //reduce slice candidates
         //reduce cube candidates
     }
 }
