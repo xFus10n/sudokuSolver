@@ -3,10 +3,10 @@ package com.sudoku.dataholder.checks;
 import com.sudoku.Field;
 import com.sudoku.dataholder.OwnerAPI;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.sudoku.dataholder.Utilz.*;
 
 public class ReduceSliceCandidates implements CandidatesCheck {
 
@@ -14,8 +14,10 @@ public class ReduceSliceCandidates implements CandidatesCheck {
     public void checkCandidates(OwnerAPI ownerAPI, Map<Integer, List<Integer>> candidatesMap) {
         Field sField = Field.getInstance();
         List<Integer> slicePositions = sField.getSlicePositions(ownerAPI.getColNumber()); //todo: can be extracted
-
+        if (ownerAPI.getPreviousOwner() != 0) appendCandidate(ownerAPI.getCurrentPosition(), ownerAPI.getPreviousOwner(), slicePositions, candidatesMap);
         if (ownerAPI.getNewOwner() == 0) {
+            List<Integer>filter = getFilterValues(ownerAPI.getCurrentPosition(), ownerAPI.getPreviousOwner(), slicePositions, candidatesMap); //previous owner becomes a candidate for all positions in a row
+            removeCertainCandidates(filter, ownerAPI.getCurrentPosition(), candidatesMap);
         } else {
             //remove candidates of new owner for all positions in a row
             for (Integer position : slicePositions) {

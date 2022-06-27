@@ -6,7 +6,8 @@ import com.sudoku.dataholder.OwnerAPI;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.sudoku.dataholder.Utilz.makeMutable;
+import static com.sudoku.dataholder.Utilz.*;
+
 
 public class ReduceRowsCandidates implements CandidatesCheck {
 
@@ -28,43 +29,5 @@ public class ReduceRowsCandidates implements CandidatesCheck {
                 }
             }
         }
-    }
-
-    private void appendCandidate(int previousOwnerPosition, int previousOwner, List<Integer> rowPositions, Map<Integer, List<Integer>> candidatesMap) {
-        Field sField = Field.getInstance();
-        for (Integer position : rowPositions) {
-            if (position != previousOwnerPosition) {
-                if (!sField.isDefined(position)) {
-                    List<Integer> values = candidatesMap.getOrDefault(position, Arrays.asList());
-                    values.add(previousOwner);
-                    Collections.sort(values);
-                    candidatesMap.replace(position, values);
-                }
-            }
-        }
-    }
-
-    private List<Integer> getFilterValues(int previousOwnerPosition, int previousOwner, List<Integer> rowPositions, Map<Integer, List<Integer>> candidatesMap) {
-        Field sField = Field.getInstance();
-        List<Integer> valuesToFilterOut = new ArrayList<>();
-        for (Integer position : rowPositions) {
-            if ((position != previousOwnerPosition) && (sField.isDefined(position))) {
-                List<Integer> values = candidatesMap.getOrDefault(position, Arrays.asList());
-                valuesToFilterOut.add(values.get(0));
-            }
-        }
-        return valuesToFilterOut;
-    }
-
-    /**
-     * Values in a row that has only one candidate for particular position
-     * should be removed as a candidates for newly reset position
-     * @param filter List of values for removal
-     * @param pos reset position
-     */
-    private void removeCertainCandidates(List<Integer> filter, int pos, Map<Integer, List<Integer>> candidatesMap) {
-        List<Integer> values = makeMutable(candidatesMap.get(pos));
-        values.removeAll(filter);
-        candidatesMap.replace(pos, values);
     }
 }
