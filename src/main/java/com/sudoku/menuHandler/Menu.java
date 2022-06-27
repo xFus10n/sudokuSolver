@@ -14,13 +14,12 @@ public class Menu {
     private final ConsoleLogger consoleLogger = ConsoleLogger.getInstance();
     private final TreeMap<Integer, Action> services;
     public Menu() {
-        scanner = new Scanner(System.in);
+        scanner = Field.getInstance().getScanner();
         services = ActionsHandler.getServices();
         menuSize = services.size();
     }
 
     public void run(){
-        attachShutDownHook();
         consoleLogger.toConsole("*** Starting menu ***");
         while (true) {
             consoleLogger.toConsole("");
@@ -40,11 +39,4 @@ public class Menu {
         }
     }
 
-    private void attachShutDownHook() {
-        ConsoleLogger logger = ConsoleLogger.getInstance();
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            scanner.close();
-            logger.toConsole("application shutdown");
-        }));
-    }
 }
