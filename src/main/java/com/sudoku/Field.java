@@ -21,6 +21,7 @@ public final class Field {
     private static final ConsoleLogger               logger  = ConsoleLogger.getInstance();
     private static final Map<Integer, List<Integer>> cubeMap = initCubes();
     private static final Map<Integer, List<Integer>> rowMap = initRows();
+    private static final Map<Integer, List<Integer>> colMap = initCols();
     private       Status               status;
     private final CandidatesDataHolder candidatesHolder = new CandidatesDataHolder();
 
@@ -173,6 +174,10 @@ public final class Field {
         return rowMap.getOrDefault(rowOrder, List.of());
     }
 
+    public List<Integer> getSlicePositions(int colOrder) {
+        return colMap.getOrDefault(colOrder, List.of());
+    }
+
     /**
      * Set sudoku field from command line
      * use 0 as hidden value, if values < 80 all remaining are 0
@@ -240,6 +245,20 @@ public final class Field {
         map.put(6, List.of(54, 55, 56, 57, 58, 59, 60, 61, 62));
         map.put(7, List.of(63, 64, 65, 66, 67, 68, 69, 70, 71));
         map.put(8, List.of(72, 73, 74, 75, 76, 77, 78, 79, 80));
+        return map;
+    }
+
+    private static Map<Integer, List<Integer>> initCols() {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        map.put(0, List.of(0, 9, 18, 27, 36, 45, 54, 63, 72));
+        map.put(1, List.of(1, 10, 19, 28, 37, 46, 55, 64, 73));
+        map.put(2, List.of(2, 11, 20, 29, 38, 47, 56, 65, 74));
+        map.put(3, List.of(3, 12, 21, 30, 39, 48, 57, 66, 75));
+        map.put(4, List.of(4, 13, 22, 31, 40, 49, 58, 67, 76));
+        map.put(5, List.of(5, 14, 23, 32, 41, 50, 59, 68, 77));
+        map.put(6, List.of(6, 15, 24, 33, 42, 51, 60, 69, 78));
+        map.put(7, List.of(7, 16, 25, 34, 43, 52, 61, 70, 79));
+        map.put(8, List.of(8, 17, 26, 35, 44, 53, 62, 71, 80));
         return map;
     }
 
