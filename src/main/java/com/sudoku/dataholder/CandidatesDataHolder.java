@@ -1,10 +1,7 @@
 package com.sudoku.dataholder;
 
 import com.sudoku.Field;
-import com.sudoku.dataholder.checks.CandidatesCheck;
-import com.sudoku.dataholder.checks.ReduceCubeCandidates;
-import com.sudoku.dataholder.checks.ReduceRowsCandidates;
-import com.sudoku.dataholder.checks.ReduceSliceCandidates;
+import com.sudoku.dataholder.checks.*;
 
 import java.util.*;
 
@@ -22,6 +19,7 @@ public class CandidatesDataHolder {
         reducers.add(new ReduceRowsCandidates());
         reducers.add(new ReduceSliceCandidates());
         reducers.add(new ReduceCubeCandidates());
+        reducers.add(new ReduceDoublesRowsCandidate());
         return reducers;
     }
 
