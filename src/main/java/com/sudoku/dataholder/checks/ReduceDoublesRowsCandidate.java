@@ -14,23 +14,24 @@ public class ReduceDoublesRowsCandidate implements CandidatesCheck{
 
         //for all rows
         for (int i = 0; i < Field.DIM_SIZE; i++) {
-            List<Integer> rowPositions = sField.getRowPositions(ownerAPI.getRowNumber());
-            Optional<List<Integer>> doublesCandidates = getDoublesCandidates(positionCandidates, rowPositions);
-            doublesCandidates.ifPresent(doubles -> removeDoublesCandidates(positionCandidates, rowPositions, doubles));
+            List<Integer> rowPositions = sField.getRowPositions(i);
+            List<List<Integer>> doublesCandidates = getDoublesCandidates(positionCandidates, rowPositions);
+            doublesCandidates.forEach(doubles -> removeDoublesCandidates(positionCandidates, rowPositions, doubles));
         }
     }
 
-    private Optional<List<Integer>> getDoublesCandidates(Map<Integer, List<Integer>> positionCandidates, List<Integer> rowPositions) {
+    private List<List<Integer>> getDoublesCandidates(Map<Integer, List<Integer>> positionCandidates, List<Integer> rowPositions) {
         Set<List<Integer>> checkSet = new HashSet<>();
+        List<List<Integer>> output = new ArrayList<>();
         //for all positions
         for (Integer position : rowPositions) {
             List<Integer> candidates = positionCandidates.get(position);
             if (candidates.size() == 2) {
-                boolean match = checkSet.add(candidates);
-                if (match && checkSet.size() == 2) return Optional.of(candidates);
+                boolean match = !checkSet.add(candidates) /* set returns false if adding duplicate */;
+                if (match) output.add(candidates);
             }
         }
-        return Optional.empty();
+        return output;
     }
 
     private void removeDoublesCandidates(Map<Integer, List<Integer>> positionCandidates, List<Integer> rowPositions, List<Integer> doubles) {
