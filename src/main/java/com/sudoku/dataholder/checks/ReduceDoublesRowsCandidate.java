@@ -11,7 +11,7 @@ public class ReduceDoublesRowsCandidate implements CandidatesCheck{
     @Override
     public void checkCandidates(OwnerAPI ownerAPI, Map<Integer, List<Integer>> positionCandidates) {
         Field sField = Field.getInstance();
-
+        //fixme: apply only on modified rows the same way for row check does
         //for all rows
         for (int i = 0; i < Field.DIM_SIZE; i++) {
             List<Integer> rowPositions = sField.getRowPositions(i);

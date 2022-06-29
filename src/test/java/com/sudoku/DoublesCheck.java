@@ -55,7 +55,6 @@ public class DoublesCheck {
         //act
         sFields.setField(51, 9);
         sFields.setField(29, 9);
-        new Show().execute(sFields);
 
         actCandidates31 = sFields.getCandidates(31);
         actCandidates36 = sFields.getCandidates(36);
@@ -69,5 +68,21 @@ public class DoublesCheck {
         assertArrayEquals(List.of(3, 4, 5, 6, 7, 8, 9).toArray(), actCandidates40.toArray());
         assertArrayEquals(List.of(3, 4, 5, 6, 7, 8).toArray(), actCandidates49.toArray());
         assertArrayEquals(List.of(1,2).toArray(), actCandidates44.toArray());
+
+        //test
+        sFields.setField(51, 0);
+        new Show().execute(sFields);
+
+        actCandidates31 = sFields.getCandidates(31);
+        actCandidates36 = sFields.getCandidates(36);
+        actCandidates40 = sFields.getCandidates(40);
+        actCandidates44 = sFields.getCandidates(44);
+        actCandidates49 = sFields.getCandidates(49);
+
+        System.out.println("actCandidates31 = " + actCandidates31);
+        System.out.println("actCandidates36 = " + actCandidates36);
+        System.out.println("actCandidates40 = " + actCandidates40);
+        System.out.println("actCandidates44 = " + actCandidates44);
+        System.out.println("actCandidates49 = " + actCandidates49);
     }
 }
