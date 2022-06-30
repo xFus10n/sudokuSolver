@@ -38,7 +38,7 @@ public class FieldElement implements Cloneable{
         moveCount++;
     }
 
-    public int getMoveCount(){
+    public int getMoveNumber(){
         return moveCount;
     }
 
