@@ -2,17 +2,19 @@ package com.sudoku.domain;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class FieldElement implements Cloneable{
+public class FieldElement implements Cloneable {
     final int position;
     private int value;
     private List<Integer> candidates;
     private int moveCount;
+    private ActionType actionType;
 
-    /* initial values for sudoku field*/
+    /* initial values for sudoku field */
     public FieldElement(int position) {
         this.position = position;
         value = 0; moveCount = 0;
         candidates = List.of(1,2,3,4,5,6,7,8,9);
+        actionType = ActionType.DEFAULT;
     }
 
     public List<Integer> getCandidates() {
@@ -28,12 +30,14 @@ public class FieldElement implements Cloneable{
     }
 
     public void setValue(int value) {
+        actionType = ActionType.SET;
         this.value = value;
         candidates = Arrays.asList(value);
         moveCount++;
     }
 
     public void removeCandidate(int value) {
+        actionType = ActionType.REDUCE;
         candidates = candidates.stream().filter(x -> x != value).collect(Collectors.toList());
         moveCount++;
     }
@@ -47,6 +51,7 @@ public class FieldElement implements Cloneable{
         return "FieldElement{" +
                 "position=" + position +
                 ", value=" + value +
+                ", action=" + actionType +
                 ", candidates=" + candidates +
                 ", moveCount=" + moveCount +
                 '}';
