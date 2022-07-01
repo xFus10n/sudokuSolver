@@ -29,29 +29,29 @@ public class FieldElement implements Cloneable {
         return position;
     }
 
-    public void setValue(int value) {
+    public void setValue(int counter, int value) {
         actionType = ActionType.SET;
         this.value = value;
         candidates = Arrays.asList(value);
-        moveCount++;
+        moveCount = counter;
     }
 
-    public void updateMoveNumberOnly() {
+    public void updateMoveNumberOnly(int counter) {
         actionType = ActionType.UPDATE_COUNTER;
-        moveCount++;
+        moveCount = counter;
     }
 
-    public void removeCandidate(int value) {
+    public void removeCandidate(int value, int counter) {
         actionType = ActionType.REDUCE;
         candidates = candidates.stream().filter(x -> x != value).collect(Collectors.toList());
-        moveCount++;
+        moveCount = counter;
     }
 
-    public void removeCandidate(Integer... values) {
+    public void removeCandidate(int counter, Integer... values) {
         List<Integer> filter = Arrays.asList(values);
         actionType = ActionType.REDUCE;
         candidates = candidates.stream().filter(x -> !filter.contains(x)).collect(Collectors.toList());
-        moveCount++;
+        moveCount = counter;
     }
 
     public int getMoveNumber(){

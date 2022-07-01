@@ -14,7 +14,17 @@ public class ReduceRowsCandidates implements CandidatesCheck {
 
     @Override
     public void checkCandidates(FieldElement fieldElement) {
+        Field sField = Field.getInstance();
+        int lastSetPosition = sField.getLastSetPosition();
+        int reduceValue = sField.getFieldValue(lastSetPosition);
+        int rowNumber = sField.getRowIDbyPosition(lastSetPosition);
+        List<Integer> rowPositionsForReduce = sField.getRowPositions(rowNumber);
+        if (rowPositionsForReduce.contains(fieldElement.getPosition())) {
+            /* start reduce */
 
+        } else {
+            /* update counter only */
+        }
     }
 
     @Override

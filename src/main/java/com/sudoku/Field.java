@@ -24,6 +24,8 @@ public final class Field {
     private final Map<Integer, List<Integer>> rowMap = initRows();
     private final Map<Integer, List<Integer>> colMap = initCols();
     private Status status = Status.DEFAULT;
+    private int lastSetPosition;
+
 
     public boolean isDefined(int position){
         return getFieldValue(position) != 0;
@@ -74,6 +76,10 @@ public final class Field {
             fieldInstance = new Field();
         }
         return fieldInstance;
+    }
+
+    public int getLastSetPosition() {
+        return lastSetPosition;
     }
 
     /**
@@ -144,9 +150,11 @@ public final class Field {
             return false;
         }
         try {
-            int lastMoveNumber = sudokuFields[row][col].getLastMoveNumber();
-            sudokuFields[row][col].setFieldValue(newValue);
-            startReducers(lastMoveNumber, currentPosition);
+            //todo: sync counters ... somehow
+//            lastSetPosition = currentPosition;
+//            int lastMoveNumber = sudokuFields[row][col].getLastMoveNumber();
+            sudokuFields[row][col].setFieldValue(0, newValue); //fixme: replace with counter
+//            startReducers(lastMoveNumber, currentPosition);
 
         } catch (Exception e) {
             return false;
@@ -154,15 +162,15 @@ public final class Field {
         return true;
     }
 
-    private void startReducers(int lastMoveNumber, int position) {
-        for (int i = 0; i < FIELD_CAPACITY; i++) {
-            if (i != position) {
-                FieldElement fieldElement = getFieldElement(i);
-                //todo: start reducers (update counters or remove candidates)
-                candidateReducer.reduce(fieldElement);
-            }
-        }
-    }
+//    private void startReducers(int lastMoveNumber, int position) {
+//        for (int i = 0; i < FIELD_CAPACITY; i++) {
+//            if (i != position) {
+//                FieldElement fieldElement = getFieldElement(i);
+//                //todo: start reducers (update counters or remove candidates)
+//                candidateReducer.reduce(fieldElement);
+//            }
+//        }
+//    }
 
     /**
      * Set sudoku field using position from 0 to 80
@@ -294,8 +302,22 @@ public final class Field {
         return map;
     }
 
-    private int getCubeIDbyPosition(int pos) {
+    public int getCubeIDbyPosition(int pos) {
         for (Map.Entry<Integer, List<Integer>> entry : cubeMap.entrySet()) {
+            if (entry.getValue().contains(pos)) return entry.getKey();
+        }
+        return -1;
+    }
+
+    public int getRowIDbyPosition(int pos) {
+        for (Map.Entry<Integer, List<Integer>> entry : rowMap.entrySet()) {
+            if (entry.getValue().contains(pos)) return entry.getKey();
+        }
+        return -1;
+    }
+
+    public int getSliceIDbyPosition(int pos) {
+        for (Map.Entry<Integer, List<Integer>> entry : colMap.entrySet()) {
             if (entry.getValue().contains(pos)) return entry.getKey();
         }
         return -1;

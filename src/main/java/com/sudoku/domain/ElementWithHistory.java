@@ -18,18 +18,18 @@ public class ElementWithHistory {
 //        this.fieldElement = fieldElement;
 //    }
 
-    public void setFieldValue(int value) {
-        fieldElement.setValue(value);
+    public void setFieldValue(int counter, int value) {
+        fieldElement.setValue(counter, value);
         history.put(fieldElement.getMoveNumber(), fieldElement.clone());
     }
 
-    public void reduceFieldCandidates(Integer... values){
-        fieldElement.removeCandidate(values);
+    public void reduceFieldCandidates(int counter, Integer... values){
+        fieldElement.removeCandidate(counter, values);
         history.put(fieldElement.getMoveNumber(), fieldElement.clone());
     }
 
-    public void updateCounter(){
-        fieldElement.updateMoveNumberOnly();
+    public void updateCounter(int counter){
+        fieldElement.updateMoveNumberOnly(counter);
         history.put(fieldElement.getMoveNumber(), fieldElement.clone());
     }
 

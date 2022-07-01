@@ -11,16 +11,16 @@ public class TestNewLogic {
         ElementWithHistory elementWithHistory = new ElementWithHistory(0);
         System.out.println("fieldElement0 = " + elementWithHistory.getFieldElementCurrentState());
 
-        elementWithHistory.reduceFieldCandidates(9, 1);
+        elementWithHistory.reduceFieldCandidates(1,9, 1);
         System.out.println("fieldElement1 = " + elementWithHistory.getFieldElementCurrentState());
 
-        elementWithHistory.reduceFieldCandidates(3);
+        elementWithHistory.reduceFieldCandidates(2,3);
         System.out.println("fieldElement2 = " + elementWithHistory.getFieldElementCurrentState());
 
-        elementWithHistory.setFieldValue(2);
+        elementWithHistory.setFieldValue(3, 2);
         System.out.println("fieldElement3 = " + elementWithHistory.getFieldElementCurrentState());
 
-        elementWithHistory.updateCounter();
+        elementWithHistory.updateCounter(4);
         System.out.println("fieldElement4 = " + elementWithHistory.getFieldElementCurrentState());
 
         System.out.println("--------------------------------");
