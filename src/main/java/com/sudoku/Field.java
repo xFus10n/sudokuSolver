@@ -1,6 +1,7 @@
 package com.sudoku;
 
 import com.sudoku.domain.ElementWithHistory;
+import com.sudoku.domain.FieldElement;
 import com.sudoku.logger.ConsoleLogger;
 import com.sudoku.properties.Status;
 import com.sudoku.reducers.CandidatesHandler;
@@ -25,7 +26,7 @@ public final class Field {
     private Status status = Status.DEFAULT;
 
     public boolean isDefined(int position){
-        return getField(position) != 0;
+        return getFieldValue(position) != 0;
     }
 
     public Status getStatus() {
@@ -145,6 +146,7 @@ public final class Field {
         try {
             int lastMoveNumber = sudokuFields[row][col].getLastMoveNumber();
             sudokuFields[row][col].setFieldValue(newValue);
+            startReducers(lastMoveNumber, currentPosition);
 
         } catch (Exception e) {
             return false;
@@ -152,8 +154,14 @@ public final class Field {
         return true;
     }
 
-    private void startReducers(int lastMoveNumber, int newValue) {
-
+    private void startReducers(int lastMoveNumber, int position) {
+        for (int i = 0; i < FIELD_CAPACITY; i++) {
+            if (i != position) {
+                FieldElement fieldElement = getFieldElement(i);
+                //todo: start reducers (update counters or remove candidates)
+                candidateReducer.reduce(fieldElement);
+            }
+        }
     }
 
     /**
@@ -181,10 +189,16 @@ public final class Field {
         return setField(row, col, value, position);
     }
 
-    public int getField(int position) {
+    public int getFieldValue(int position) {
         int row = position / DIM_SIZE;
         int col = position - (row * DIM_SIZE);
         return sudokuFields[row][col].getFieldElementCurrentState().getValue();
+    }
+
+    public FieldElement getFieldElement(int position) {
+        int row = position / DIM_SIZE;
+        int col = position - (row * DIM_SIZE);
+        return sudokuFields[row][col].getFieldElementCurrentState();
     }
 
     public List<Integer> getCubePositions(int cubeOrder) {

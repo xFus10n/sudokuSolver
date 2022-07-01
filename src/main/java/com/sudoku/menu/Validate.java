@@ -90,7 +90,7 @@ public class Validate implements Action {
         for (int i = 0; i < Field.DIM_SIZE; i++) {
             setOfInts.clear();
             for (Integer cubePosition : sudokuField.getCubePositions(i)) {
-                int element = sudokuField.getField(cubePosition);
+                int element = sudokuField.getFieldValue(cubePosition);
                 if (contains(setOfInts, element)) {
                     return false;
                 }

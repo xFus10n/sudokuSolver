@@ -3,7 +3,6 @@ package com.sudoku.menu;
 import com.sudoku.Field;
 import com.sudoku.logger.ConsoleLogger;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class PositionCandidates implements Action{
@@ -30,7 +29,7 @@ public class PositionCandidates implements Action{
                 logger.toConsole("Accepted values range are 0 ... 80");
                 return;
             }
-            int fieldValue = sField.getField(pos);
+            int fieldValue = sField.getFieldValue(pos);
             logger.toConsole("Position value is = " + fieldValue);
 
 //            List<Integer> candidates = sField.getCandidates(pos);

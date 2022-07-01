@@ -20,8 +20,13 @@ public class TestNewLogic {
         elementWithHistory.setFieldValue(2);
         System.out.println("fieldElement3 = " + elementWithHistory.getFieldElementCurrentState());
 
+        elementWithHistory.updateCounter();
+        System.out.println("fieldElement4 = " + elementWithHistory.getFieldElementCurrentState());
+
         System.out.println("--------------------------------");
 
+        FieldElement history4 = elementWithHistory.getHistory(4);
+        System.out.println("history3 = " + history4);
         FieldElement history3 = elementWithHistory.getHistory(3);
         System.out.println("history3 = " + history3);
         FieldElement history2 = elementWithHistory.getHistory(2);

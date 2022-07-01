@@ -28,6 +28,11 @@ public class ElementWithHistory {
         history.put(fieldElement.getMoveNumber(), fieldElement.clone());
     }
 
+    public void updateCounter(){
+        fieldElement.updateMoveNumberOnly();
+        history.put(fieldElement.getMoveNumber(), fieldElement.clone());
+    }
+
     public FieldElement getHistory(int moveNumber) {
         return history.get(moveNumber);
     }

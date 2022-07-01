@@ -36,6 +36,11 @@ public class FieldElement implements Cloneable {
         moveCount++;
     }
 
+    public void updateMoveNumberOnly() {
+        actionType = ActionType.UPDATE_COUNTER;
+        moveCount++;
+    }
+
     public void removeCandidate(int value) {
         actionType = ActionType.REDUCE;
         candidates = candidates.stream().filter(x -> x != value).collect(Collectors.toList());
