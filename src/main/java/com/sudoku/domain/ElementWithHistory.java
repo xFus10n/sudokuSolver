@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ElementWithHistory {
-    private Map<Integer,FieldElement> history;
-    private FieldElement fieldElement;
+    private final Map<Integer,FieldElement> history;
+    private final FieldElement              fieldElement;
 
     public ElementWithHistory(int position) {
         history = new HashMap<>();
@@ -34,5 +34,13 @@ public class ElementWithHistory {
 
     public FieldElement getFieldElementCurrentState() {
         return fieldElement;
+    }
+
+    public int getLastMoveNumber() {
+        return fieldElement.getMoveNumber();
+    }
+
+    public int getElementPosition() {
+        return fieldElement.getPosition();
     }
 }

@@ -1,12 +1,18 @@
-package com.sudoku.dataholder.checks;
+package com.sudoku.reducers.checks;
 
 import com.sudoku.Field;
-import com.sudoku.dataholder.OwnerAPI;
-import com.sudoku.dataholder.Utilz;
+import com.sudoku.domain.FieldElement;
+import com.sudoku.reducers.OwnerAPI;
+import com.sudoku.reducers.Utilz;
 
 import java.util.*;
 
 public class ReduceDoublesRowsCandidate implements CandidatesCheck{
+
+    @Override
+    public void checkCandidates(FieldElement fieldElement) {
+
+    }
 
     @Override
     public void checkCandidates(OwnerAPI ownerAPI, Map<Integer, List<Integer>> positionCandidates) {

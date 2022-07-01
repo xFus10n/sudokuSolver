@@ -1,4 +1,4 @@
-package com.sudoku.dataholder;
+package com.sudoku.reducers;
 
 import com.sudoku.Field;
 

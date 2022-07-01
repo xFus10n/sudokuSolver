@@ -3,18 +3,22 @@ package com.sudoku;
 import com.sudoku.domain.ElementWithHistory;
 import com.sudoku.logger.ConsoleLogger;
 import com.sudoku.properties.Status;
+import com.sudoku.reducers.CandidatesHandler;
 
 import java.util.*;
 
 public final class Field {
     private static Field fieldInstance;
-    private final Scanner scanner;
+
     public static final  int FIELD_CAPACITY = 81;
     public static final  int DIM_SIZE = 9;
     private static final int STRING_CAPACITY = 320;
     private static final int SOLVABLE_AMOUNT_ELEMENTS = 17;
-    private ElementWithHistory[][] sudokuFields;
     private static final ConsoleLogger logger = ConsoleLogger.getInstance();
+    private static final CandidatesHandler candidateReducer = new CandidatesHandler();
+
+    private ElementWithHistory[][] sudokuFields;
+    private final Scanner scanner;
     private final Map<Integer, List<Integer>> cubeMap = initCubes();
     private final Map<Integer, List<Integer>> rowMap = initRows();
     private final Map<Integer, List<Integer>> colMap = initCols();
@@ -139,15 +143,17 @@ public final class Field {
             return false;
         }
         try {
-            //fixme: refactor to new logic with history
-//            OwnerAPI api = new OwnerAPI(currentPosition, newValue, getField(currentPosition), row, col, getCubeIDbyPosition(currentPosition));
-//            candidatesHolder.setPositionOwner(api);
+            int lastMoveNumber = sudokuFields[row][col].getLastMoveNumber();
             sudokuFields[row][col].setFieldValue(newValue);
-//            sudokuFields[row][col] = newValue;
+
         } catch (Exception e) {
             return false;
         }
         return true;
+    }
+
+    private void startReducers(int lastMoveNumber, int newValue) {
+
     }
 
     /**

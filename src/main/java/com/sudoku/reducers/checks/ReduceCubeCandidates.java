@@ -1,16 +1,23 @@
-package com.sudoku.dataholder.checks;
+package com.sudoku.reducers.checks;
 
 import com.sudoku.Field;
-import com.sudoku.dataholder.OwnerAPI;
+import com.sudoku.domain.FieldElement;
+import com.sudoku.reducers.OwnerAPI;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.sudoku.dataholder.Utilz.*;
+import static com.sudoku.reducers.Utilz.*;
 
 public class ReduceCubeCandidates implements CandidatesCheck{
+
+    @Override
+    public void checkCandidates(FieldElement fieldElement) {
+
+    }
+
     @Override
     public void checkCandidates(OwnerAPI ownerAPI, Map<Integer, List<Integer>> candidatesMap) {
         Field sField = Field.getInstance();

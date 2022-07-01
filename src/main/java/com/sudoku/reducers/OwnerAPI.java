@@ -1,4 +1,4 @@
-package com.sudoku.dataholder;
+package com.sudoku.reducers;
 
 public class OwnerAPI {
     int currentPosition;
