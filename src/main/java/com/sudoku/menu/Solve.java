@@ -21,12 +21,12 @@ public class Solve implements Action{
         boolean solvable = sudokuField.solvable();
         ConsoleLogger logger = ConsoleLogger.getInstance();
         logger.toConsole("Sudoku is solvable = " + solvable);
-        for (int i = 0; i < Field.FIELD_CAPACITY; i++) {
-            List<Integer> candidates = sudokuField.getCandidates(i);
-            if ((sudokuField.getField(i) == 0) && (candidates.size() == 1)) {
-                logger.toConsole("Position: " + i + " has only one value = " + candidates.get(0));
-            }
-        }
+//        for (int i = 0; i < Field.FIELD_CAPACITY; i++) {
+//            List<Integer> candidates = sudokuField.getCandidates(i);
+//            if ((sudokuField.getField(i) == 0) && (candidates.size() == 1)) {
+//                logger.toConsole("Position: " + i + " has only one value = " + candidates.get(0));
+//            }
+//        }
         //todo: implement
 
     }

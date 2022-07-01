@@ -33,11 +33,11 @@ public class PositionCandidates implements Action{
             int fieldValue = sField.getField(pos);
             logger.toConsole("Position value is = " + fieldValue);
 
-            List<Integer> candidates = sField.getCandidates(pos);
+//            List<Integer> candidates = sField.getCandidates(pos);
             logger.toConsole("Candidates for position : ", true);
             //todo: impl
 
-            logger.toConsole(candidates.toString());
+//            logger.toConsole(candidates.toString());
 
         } catch (Exception e) {
             logger.toConsole(e.getMessage());

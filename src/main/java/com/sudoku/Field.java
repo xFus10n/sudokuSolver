@@ -1,29 +1,24 @@
 package com.sudoku;
 
-import com.sudoku.dataholder.CandidatesDataHolder;
-import com.sudoku.dataholder.OwnerAPI;
+import com.sudoku.domain.ElementWithHistory;
 import com.sudoku.logger.ConsoleLogger;
 import com.sudoku.properties.Status;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public final class Field {
-    private final        Scanner                     scanner;
-    public static final  int                         FIELD_CAPACITY           = 81;
-    public static final  int                         DIM_SIZE                 = 9;
-    private static final int                         STRING_CAPACITY          = 320;
-    private static final int                         SOLVABLE_AMOUNT_ELEMENTS = 17;
-    private static       Field                       field;
-    private              int[][]                     sudokuFields             = new int[DIM_SIZE][DIM_SIZE];
-    private static final ConsoleLogger               logger  = ConsoleLogger.getInstance();
-    private static final Map<Integer, List<Integer>> cubeMap = initCubes();
-    private static final Map<Integer, List<Integer>> rowMap = initRows();
-    private static final Map<Integer, List<Integer>> colMap = initCols();
-    private       Status               status;
-    private final CandidatesDataHolder candidatesHolder = new CandidatesDataHolder();
+    private static Field fieldInstance;
+    private final Scanner scanner;
+    public static final  int FIELD_CAPACITY = 81;
+    public static final  int DIM_SIZE = 9;
+    private static final int STRING_CAPACITY = 320;
+    private static final int SOLVABLE_AMOUNT_ELEMENTS = 17;
+    private ElementWithHistory[][] sudokuFields;
+    private static final ConsoleLogger logger = ConsoleLogger.getInstance();
+    private final Map<Integer, List<Integer>> cubeMap = initCubes();
+    private final Map<Integer, List<Integer>> rowMap = initRows();
+    private final Map<Integer, List<Integer>> colMap = initCols();
+    private Status status = Status.DEFAULT;
 
     public boolean isDefined(int position){
         return getField(position) != 0;
@@ -49,8 +44,19 @@ public final class Field {
      * hidden constructor
      */
     private Field() {
+        initSudokuFields();
         scanner = new Scanner(System.in);
         attachShutDownHook();
+    }
+
+    private void initSudokuFields() {
+        sudokuFields = new ElementWithHistory[DIM_SIZE][DIM_SIZE];
+        int counter = 0;
+        for (int i = 0; i < DIM_SIZE; i++) {
+            for (int j = 0; j < DIM_SIZE; j++) {
+                sudokuFields[i][j] = new ElementWithHistory(counter++);
+            }
+        }
     }
 
     /**
@@ -59,10 +65,10 @@ public final class Field {
      * @return Field instance
      */
     public static synchronized Field getInstance() {
-        if (field == null) {
-            field = new Field();
+        if (fieldInstance == null) {
+            fieldInstance = new Field();
         }
-        return field;
+        return fieldInstance;
     }
 
     /**
@@ -71,20 +77,27 @@ public final class Field {
      * @return two dim. integer array
      */
     public int[][] getSudokuFields() {
-        return sudokuFields;
+        int[][] output = new int[DIM_SIZE][DIM_SIZE];
+        for (int i = 0; i < DIM_SIZE; i++) {
+            for (int j = 0; j < DIM_SIZE; j++) {
+                output[i][j] = sudokuFields[i][j].getFieldElementCurrentState().getValue();
+            }
+        }
+        return output;
     }
 
     /**
      * Print out sudoku fields
      */
     public void showFields() {
+        int[][] fields = getSudokuFields();
         for (int j = 0, sudokuFieldLength = sudokuFields.length; j < sudokuFieldLength; j++) {
-            int[] arr = sudokuFields[j];
+            int[] arr = fields[j];
             StringBuilder output = new StringBuilder(STRING_CAPACITY);
             for (int i = 0, arrLength = arr.length; i < arrLength; i++) {
                 if (i == 0) {
                     output.append("[ ")
-                          .append(arr[i]);
+                          .append(arr[0]);
                 } else if (i == arrLength - 1) {
                     output.append(' ')
                           .append(arr[i])
@@ -126,9 +139,11 @@ public final class Field {
             return false;
         }
         try {
-            OwnerAPI api = new OwnerAPI(currentPosition, newValue, getField(currentPosition), row, col, getCubeIDbyPosition(currentPosition));
-            candidatesHolder.setPositionOwner(api);
-            sudokuFields[row][col] = newValue;
+            //fixme: refactor to new logic with history
+//            OwnerAPI api = new OwnerAPI(currentPosition, newValue, getField(currentPosition), row, col, getCubeIDbyPosition(currentPosition));
+//            candidatesHolder.setPositionOwner(api);
+            sudokuFields[row][col].setFieldValue(newValue);
+//            sudokuFields[row][col] = newValue;
         } catch (Exception e) {
             return false;
         }
@@ -163,7 +178,7 @@ public final class Field {
     public int getField(int position) {
         int row = position / DIM_SIZE;
         int col = position - (row * DIM_SIZE);
-        return sudokuFields[row][col];
+        return sudokuFields[row][col].getFieldElementCurrentState().getValue();
     }
 
     public List<Integer> getCubePositions(int cubeOrder) {
@@ -192,13 +207,14 @@ public final class Field {
      * initialize fields
      */
     public void resetFields() {
-        sudokuFields = new int[DIM_SIZE][DIM_SIZE];
-        candidatesHolder.reset();
+        sudokuFields = new ElementWithHistory[DIM_SIZE][DIM_SIZE];
+        initSudokuFields();
     }
 
     public boolean solvable() {
+        int[][] fields = getSudokuFields();
         int count = 0;
-        for (int[] sudokuField : sudokuFields) {
+        for (int[] sudokuField : fields) {
             for (int i : sudokuField) {
                 if (0 == i) {
                     count++;
@@ -209,10 +225,6 @@ public final class Field {
             }
         }
         return true;
-    }
-
-    public List<Integer> getCandidates(int position) {
-        return candidatesHolder.getPositionCandidates(position);
     }
 
     /**
@@ -262,7 +274,7 @@ public final class Field {
         return map;
     }
 
-    private static int getCubeIDbyPosition(int pos) {
+    private int getCubeIDbyPosition(int pos) {
         for (Map.Entry<Integer, List<Integer>> entry : cubeMap.entrySet()) {
             if (entry.getValue().contains(pos)) return entry.getKey();
         }
