@@ -1,5 +1,5 @@
 package com.sudoku.domain;
 
 public enum ActionType {
-    DEFAULT, SET, REDUCE, UPDATE_COUNTER
+    DEFAULT, SET, REDUCE,
 }

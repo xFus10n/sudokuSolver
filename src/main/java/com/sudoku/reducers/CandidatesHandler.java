@@ -1,6 +1,6 @@
 package com.sudoku.reducers;
 
-import com.sudoku.domain.FieldElement;
+import com.sudoku.domain.ElementWithHistory;
 import com.sudoku.reducers.checks.*;
 
 import java.util.*;
@@ -21,9 +21,9 @@ public class CandidatesHandler {
         return reducersList;
     }
 
-    public void reduce(FieldElement fieldElement){
+    public void reduce(ElementWithHistory elementWithHistory, OwnerAPI api){
         for (CandidatesCheck reducer : reducers) {
-            reducer.checkCandidates(fieldElement);
+            reducer.checkCandidates(elementWithHistory, api);
         }
     }
 }

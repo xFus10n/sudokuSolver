@@ -1,6 +1,7 @@
 package com.sudoku.domain;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ElementWithHistory {
@@ -13,23 +14,17 @@ public class ElementWithHistory {
         history.put(fieldElement.getMoveNumber(), fieldElement.clone());
     }
 
-//    public void setFieldElement(FieldElement fieldElement) {
-//        history.put(this.fieldElement.getMoveNumber(), this.fieldElement.clone());
-//        this.fieldElement = fieldElement;
-//    }
-
     public void setFieldValue(int counter, int value) {
         fieldElement.setValue(counter, value);
         history.put(fieldElement.getMoveNumber(), fieldElement.clone());
     }
 
-    public void reduceFieldCandidates(int counter, Integer... values){
-        fieldElement.removeCandidate(counter, values);
-        history.put(fieldElement.getMoveNumber(), fieldElement.clone());
+    public void reduceFieldCandidates(Integer... values){
+        fieldElement.removeCandidate(values);
     }
 
     public void updateCounter(int counter){
-        fieldElement.updateMoveNumberOnly(counter);
+        fieldElement.setMoveNumber(counter);
         history.put(fieldElement.getMoveNumber(), fieldElement.clone());
     }
 
@@ -37,15 +32,22 @@ public class ElementWithHistory {
         return history.get(moveNumber);
     }
 
-    public FieldElement getFieldElementCurrentState() {
-        return fieldElement;
-    }
-
-    public int getLastMoveNumber() {
+    public int getMoveNumber() {
         return fieldElement.getMoveNumber();
     }
 
     public int getElementPosition() {
         return fieldElement.getPosition();
+    }
+
+    public int getElementValue() {return fieldElement.getValue();}
+
+    public List<Integer> getPositionCandidates(){
+        return fieldElement.getCandidates();
+    }
+
+    @Override
+    public String toString(){
+        return fieldElement.toString();
     }
 }

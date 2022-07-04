@@ -9,26 +9,22 @@ public class TestNewLogic {
     @Test
     void testHistory() {
         ElementWithHistory elementWithHistory = new ElementWithHistory(0);
-        System.out.println("fieldElement0 = " + elementWithHistory.getFieldElementCurrentState());
+        System.out.println("fieldElement0 = " + elementWithHistory);
 
-        elementWithHistory.reduceFieldCandidates(1,9, 1);
-        System.out.println("fieldElement1 = " + elementWithHistory.getFieldElementCurrentState());
+        elementWithHistory.reduceFieldCandidates(9, 1);
+        System.out.println("fieldElement1 = " + elementWithHistory);
 
-        elementWithHistory.reduceFieldCandidates(2,3);
-        System.out.println("fieldElement2 = " + elementWithHistory.getFieldElementCurrentState());
+        elementWithHistory.reduceFieldCandidates(3);
+        System.out.println("fieldElement2 = " + elementWithHistory);
 
-        elementWithHistory.setFieldValue(3, 2);
-        System.out.println("fieldElement3 = " + elementWithHistory.getFieldElementCurrentState());
+        elementWithHistory.updateCounter(1);
+        System.out.println("fieldElement3 = " + elementWithHistory);
 
-        elementWithHistory.updateCounter(4);
-        System.out.println("fieldElement4 = " + elementWithHistory.getFieldElementCurrentState());
+        elementWithHistory.setFieldValue(2, 2);
+        System.out.println("fieldElement4 = " + elementWithHistory);
 
         System.out.println("--------------------------------");
 
-        FieldElement history4 = elementWithHistory.getHistory(4);
-        System.out.println("history3 = " + history4);
-        FieldElement history3 = elementWithHistory.getHistory(3);
-        System.out.println("history3 = " + history3);
         FieldElement history2 = elementWithHistory.getHistory(2);
         System.out.println("history2 = " + history2);
         FieldElement history1 = elementWithHistory.getHistory(1);
