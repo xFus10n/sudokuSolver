@@ -245,12 +245,20 @@ public final class Field {
         }
     }
 
+    public void undoFieldElement(int pos) {
+        int row = pos / DIM_SIZE;
+        int col = pos - (row * DIM_SIZE);
+        sudokuFields[row][col].undo();
+        if (counter != 0) counter--;
+    }
+
     /**
      * initialize fields
      */
     public void resetFields() {
         sudokuFields = new ElementWithHistory[DIM_SIZE][DIM_SIZE];
         initSudokuFields();
+        counter = 0;
     }
 
     public boolean solvable() {
