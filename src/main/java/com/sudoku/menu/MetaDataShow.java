@@ -5,7 +5,7 @@ import com.sudoku.logger.ConsoleLogger;
 
 import java.util.Scanner;
 
-public class PositionCandidates implements Action{
+public class MetaDataShow implements Action{
     @Override
     public int id() {
         return 7;
@@ -13,7 +13,7 @@ public class PositionCandidates implements Action{
 
     @Override
     public String name() {
-        return "show position candidates (in dev)";
+        return "show meta data (in dev)";
     }
 
     @Override
@@ -32,8 +32,8 @@ public class PositionCandidates implements Action{
             int fieldValue = sField.getFieldValue(pos);
             logger.toConsole("Position value is = " + fieldValue);
 
-            logger.toConsole("Candidates for position : ", true);
-            logger.toConsole(sField.getPositionCandidates(pos).toString());
+            logger.toConsole("Meta data for position : ", true);
+            logger.toConsole(sField.getFieldElement(pos).toString());
 
         } catch (Exception e) {
             logger.toConsole(e.getMessage());
