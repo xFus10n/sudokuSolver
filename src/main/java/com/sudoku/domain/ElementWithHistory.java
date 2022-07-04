@@ -6,12 +6,19 @@ import java.util.Map;
 
 public class ElementWithHistory {
     private final Map<Integer,FieldElement> history;
-    private final FieldElement              fieldElement;
+    private       FieldElement              fieldElement;
 
     public ElementWithHistory(int position) {
         history = new HashMap<>();
         fieldElement = new FieldElement(position);
         history.put(fieldElement.getMoveNumber(), fieldElement.clone());
+    }
+
+    public void undo(){
+        if (fieldElement.getMoveNumber() == 0) return;
+        FieldElement previousFieldElement = history.get(fieldElement.getMoveNumber() - 1);
+        history.remove(previousFieldElement.getMoveNumber());
+        fieldElement = previousFieldElement;
     }
 
     public void setFieldValue(int counter, int value) {

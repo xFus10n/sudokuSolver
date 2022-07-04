@@ -15,8 +15,8 @@ public class CandidatesHandler {
     private static List<CandidatesCheck> initReducers(){
         List<CandidatesCheck> reducersList = new ArrayList<>();
         reducersList.add(new ReduceRowsCandidates());
-//        reducersList.add(new ReduceSliceCandidates());
-//        reducersList.add(new ReduceCubeCandidates());
+        reducersList.add(new ReduceSliceCandidates());
+        reducersList.add(new ReduceCubeCandidates());
 //        reducersList.add(new ReduceDoublesRowsCandidate());
         return reducersList;
     }

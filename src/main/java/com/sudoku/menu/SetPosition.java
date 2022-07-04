@@ -5,7 +5,7 @@ import com.sudoku.logger.ConsoleLogger;
 
 import java.util.Scanner;
 
-public class Position implements Action {
+public class SetPosition implements Action {
     private final ConsoleLogger logger = ConsoleLogger.getInstance();
 
     @Override
