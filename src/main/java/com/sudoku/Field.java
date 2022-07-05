@@ -3,7 +3,6 @@ package com.sudoku;
 import com.sudoku.domain.ElementWithHistory;
 import com.sudoku.domain.Pos;
 import com.sudoku.logger.ConsoleLogger;
-import com.sudoku.menu.Show;
 import com.sudoku.properties.Status;
 import com.sudoku.reducers.CandidatesHandler;
 import com.sudoku.reducers.OwnerAPI;

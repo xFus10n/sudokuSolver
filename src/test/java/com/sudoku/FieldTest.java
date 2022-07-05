@@ -39,7 +39,7 @@ class FieldTest {
 
         //act
         new FieldsFromArguments().execute(sFields);
-        sFields.setField(80, 0);
+        new Undo().execute(sFields);
         new Validate().execute(sFields);
 
         //assert
@@ -76,7 +76,7 @@ class FieldTest {
         assertTrue(fields.setField(80, 1));
         assertFalse(fields.setField(-1, 1));
         assertFalse(fields.setField(81, 1));
-        assertTrue(fields.setField(1, 0));
+        assertFalse(fields.setField(1, 0));
         assertTrue(fields.setField(1, 9));
         assertFalse(fields.setField(40, 10));
     }
