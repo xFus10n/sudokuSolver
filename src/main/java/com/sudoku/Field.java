@@ -22,11 +22,7 @@ public final class Field {
 
     private ElementWithHistory[][] sudokuFields;
     private final Scanner scanner;
-//    private static final Map<Integer, List<Integer>> cubeMap = initCubes();
-//    private static final Map<Integer, List<Integer>> rowMap = initRows();
-//    private static final Map<Integer, List<Integer>> colMap = initCols();
     private Status status = Status.DEFAULT;
-    private int lastSetPosition;
     private int counter;
 
 
@@ -80,10 +76,6 @@ public final class Field {
             fieldInstance = new Field();
         }
         return fieldInstance;
-    }
-
-    public int getLastSetPosition() {
-        return lastSetPosition;
     }
 
     /**
@@ -155,7 +147,6 @@ public final class Field {
         }
         try {
             counter++;
-            lastSetPosition = currentPosition;
             OwnerAPI ownerAPI = new OwnerAPI(currentPosition, newValue, row, col, getCubeIDbyPosition(currentPosition));
             sudokuFields[row][col].setFieldValue(counter, newValue);
             applyReducers(ownerAPI, counter);
@@ -264,20 +255,6 @@ public final class Field {
             }
         }
         return true;
-    }
-
-    public static void printPositionHelp() {
-        logger.toConsole("[ 0,  1,  2  ] [ 3,  4,  5  ]  [ 6,  7,  8  ]");
-        logger.toConsole("[ 9,  10, 11 ] [ 12, 13, 14 ]  [ 15, 16, 17 ]");
-        logger.toConsole("[ 18, 19, 20 ] [ 21, 22, 23 ]  [ 24, 25, 26 ]");
-        logger.toConsole("");
-        logger.toConsole("[ 27, 28, 29 ] [ 30, 31, 32 ]  [ 33, 34, 35 ]");
-        logger.toConsole("[ 36, 37, 38 ] [ 39, 40, 41 ]  [ 42, 43, 44 ]");
-        logger.toConsole("[ 45, 46, 47 ] [ 48, 49, 50 ]  [ 51, 52, 53 ]");
-        logger.toConsole("");
-        logger.toConsole("[ 54, 55, 56 ] [ 57, 58, 59 ]  [ 60, 61, 62 ]");
-        logger.toConsole("[ 63, 64, 65 ] [ 66, 67, 68 ]  [ 69, 70, 71 ]");
-        logger.toConsole("[ 72, 73, 74 ] [ 75, 76, 77 ]  [ 78, 79, 80 ]");
     }
 
     public Scanner getScanner() {

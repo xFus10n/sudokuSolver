@@ -2,8 +2,9 @@ package com.sudoku.menu;
 
 import com.sudoku.Field;
 import com.sudoku.logger.ConsoleLogger;
-
 import java.util.Scanner;
+
+import static com.sudoku.utils.FieldUtilz.printPositionHelp;
 
 public class MetaDataShow implements Action{
     @Override
@@ -19,7 +20,7 @@ public class MetaDataShow implements Action{
     @Override
     public void execute(Field sudokuField) {
         ConsoleLogger logger = ConsoleLogger.getInstance();
-        Field.printPositionHelp();
+        printPositionHelp();
         Field sField = Field.getInstance();
         Scanner scanner = sField.getScanner();
         try {
