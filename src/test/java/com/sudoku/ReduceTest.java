@@ -27,7 +27,7 @@ public class ReduceTest {
     }
 
     @Test
-    void testRowsCandidatesCalculation2() {
+    void testCandidatesCalculation() {
         //assign
         String[] inArgs = {"1", "2", "3", "4", "5", "6", "7", "8"};
         Arguments.initializeArgumentContainer(inArgs);
@@ -36,122 +36,21 @@ public class ReduceTest {
         //act
         Action setFields = new FieldsFromArguments();
         setFields.execute(sFields);
-        new Show().execute(sFields);
         var actCandidates9 = sFields.getPositionCandidates(9);
         var actCandidates8 = sFields.getPositionCandidates(8);
 
         //assert
-        System.out.println("actCandidates9 = " + actCandidates9);
-        System.out.println("actCandidates8 = " + actCandidates8);
         assertArrayEquals(List.of(4, 5, 6, 7, 8, 9).toArray(), actCandidates9.toArray());
         assertArrayEquals(List.of(9).toArray(), actCandidates8.toArray());
+
+        sFields.setField(80, 1);
+        sFields.setField(72, 4);
+
+        actCandidates9 = sFields.getPositionCandidates(9);
+        actCandidates8 = sFields.getPositionCandidates(8);
+        var actCandidate76 = sFields.getPositionCandidates(76);
+        assertArrayEquals(List.of(2, 3, 6, 7, 8, 9).toArray(), actCandidate76.toArray());
+        assertArrayEquals(List.of(5, 6, 7, 8, 9).toArray(), actCandidates9.toArray());
+        assertArrayEquals(List.of(9).toArray(), actCandidates8.toArray());
     }
-//
-//    @Test
-//    void testRowsCandidatesCalculation() {
-//        //assign
-//        String[] inArgs = {"1", "2", "3", "4", "5", "6"};
-//        Arguments.initializeArgumentContainer(inArgs);
-//        Arguments.getInstance();
-//
-//        //act
-//        Action setFields = new FieldsFromArguments();
-//        setFields.execute(sFields);
-//
-//        List<Integer> actCandidates8 = sFields.getCandidates(8);
-//        List<Integer> actCandidates5 = sFields.getCandidates(5);
-//
-//        //assert
-//        assertArrayEquals(Arrays.asList(7, 8, 9).toArray(), actCandidates8.toArray());
-//        assertArrayEquals(Arrays.asList(6).toArray(), actCandidates5.toArray());
-//
-//        sFields.setField(5, 7);
-//        actCandidates8 = sFields.getCandidates(8);
-//        actCandidates5 = sFields.getCandidates(5);
-//
-//        //assert
-//        assertArrayEquals(Arrays.asList(6, 8, 9).toArray(), actCandidates8.toArray());
-//        assertArrayEquals(Arrays.asList(7).toArray(), actCandidates5.toArray());
-//
-//        sFields.setField(5, 0);
-//        actCandidates8 = sFields.getCandidates(8);
-//        actCandidates5 = sFields.getCandidates(5);
-//
-//        //assert
-//        assertArrayEquals(Arrays.asList(6, 7, 8, 9).toArray(), actCandidates8.toArray());
-//        assertArrayEquals(Arrays.asList(6, 7, 8, 9).toArray(), actCandidates5.toArray());
-//
-//        sFields.setField(5, 0);
-//        actCandidates8 = sFields.getCandidates(8);
-//        actCandidates5 = sFields.getCandidates(5);
-//
-//        //assert
-//        assertArrayEquals(Arrays.asList(6, 7, 8, 9).toArray(), actCandidates8.toArray());
-//        assertArrayEquals(Arrays.asList(6, 7, 8, 9).toArray(), actCandidates5.toArray());
-//
-//        sFields.resetFields();
-//        actCandidates8 = sFields.getCandidates(8);
-//        actCandidates5 = sFields.getCandidates(5);
-//
-//        //assert
-//        assertArrayEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9).toArray(), actCandidates8.toArray());
-//        assertArrayEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9).toArray(), actCandidates5.toArray());
-//    }
-//
-//    @Test
-//    void testSliceCandidatesCalculation() {
-//        //assign
-//        String[] inArgs = {"1", "2", "3", "4", "5", "6", "7", "8"};
-//        Arguments.initializeArgumentContainer(inArgs);
-//        Arguments.getInstance();
-//
-//        //act
-//        Action setFields = new FieldsFromArguments();
-//        setFields.execute(sFields);
-//
-//        List<Integer> actCandidates79 = sFields.getCandidates(79);
-//        List<Integer> actCandidates72 = sFields.getCandidates(72);
-//
-//        //assert
-//        assertArrayEquals(List.of(1,2,3,4,5,6,7,9).toArray(), actCandidates79.toArray());
-//        assertArrayEquals(List.of(2,3,4,5,6,7,8,9).toArray(), actCandidates72.toArray());
-//
-//        sFields.setField(9, 4);
-//        sFields.setField(7, 0);
-//        actCandidates79 = sFields.getCandidates(79);
-//        actCandidates72 = sFields.getCandidates(72);
-//
-//        //assert
-//        assertArrayEquals(List.of(1,2,3,4,5,6,7,8,9).toArray(), actCandidates79.toArray());
-//        assertArrayEquals(List.of(2,3,5,6,7,8,9).toArray(), actCandidates72.toArray());
-//
-//        sFields.setField(18, 5);
-//        sFields.setField(27, 6);
-//        sFields.setField(36, 7);
-//        sFields.setField(45, 8);
-//        actCandidates72 = sFields.getCandidates(72);
-//
-//        //assert
-//        assertArrayEquals(List.of(2,3,9).toArray(), actCandidates72.toArray());
-//
-//        sFields.setField(54, 2);
-//        sFields.setField(63, 3);
-//        actCandidates72 = sFields.getCandidates(72);
-//
-//        //assert
-//        assertArrayEquals(List.of(9).toArray(), actCandidates72.toArray());
-//
-//        sFields.setField(63, 0);
-//        sFields.setField(72, 1);
-//        actCandidates72 = sFields.getCandidates(72);
-//
-//        //assert
-//        assertArrayEquals(List.of(1).toArray(), actCandidates72.toArray());
-//
-//        sFields.setField(72, 0);
-//        actCandidates72 = sFields.getCandidates(72);
-//
-//        //assert
-//        assertArrayEquals(List.of(3,9).toArray(), actCandidates72.toArray());
-//    }
 }
