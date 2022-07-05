@@ -3,23 +3,14 @@ package com.sudoku;
 import com.sudoku.menu.*;
 import com.sudoku.properties.Arguments;
 import com.sudoku.properties.Status;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class FieldTest {
-    private String inArgsSolvedSudoku = "1 2 3 4 5 6 7 8 9 4 5 6 7 8 9 1 2 3 7 8 9 1 2 3 4 5 6 2 3 4 5 6 7 8 9 1 5 6 7 8 9 1 2 3 4 8 9 1 2 3 4 5 6 7 3 4 5 6 7 8 9 1 2 6 7 8 9 1 2 3 4 5 9 1 2 3 4 5 6 7 8";
-    private static Field sFields;
-
-    @BeforeAll
-    static void beforeAll() {
-        sFields = Field.getInstance();
-    }
+    private static final String inArgsSolvedSudoku = "1 2 3 4 5 6 7 8 9 4 5 6 7 8 9 1 2 3 7 8 9 1 2 3 4 5 6 2 3 4 5 6 7 8 9 1 5 6 7 8 9 1 2 3 4 8 9 1 2 3 4 5 6 7 3 4 5 6 7 8 9 1 2 6 7 8 9 1 2 3 4 5 9 1 2 3 4 5 6 7 8";
+    private static final Field  sFields            = Field.getInstance();
 
     @BeforeEach
     void setUp() {
@@ -48,7 +39,7 @@ class FieldTest {
 
         //act
         new FieldsFromArguments().execute(sFields);
-        sFields.setField(80, 0);
+        new Undo().execute(sFields);
         new Validate().execute(sFields);
 
         //assert
@@ -85,7 +76,7 @@ class FieldTest {
         assertTrue(fields.setField(80, 1));
         assertFalse(fields.setField(-1, 1));
         assertFalse(fields.setField(81, 1));
-        assertTrue(fields.setField(1, 0));
+        assertFalse(fields.setField(1, 0));
         assertTrue(fields.setField(1, 9));
         assertFalse(fields.setField(40, 10));
     }

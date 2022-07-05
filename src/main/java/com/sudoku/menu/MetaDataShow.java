@@ -2,11 +2,11 @@ package com.sudoku.menu;
 
 import com.sudoku.Field;
 import com.sudoku.logger.ConsoleLogger;
-
-import java.util.List;
 import java.util.Scanner;
 
-public class PositionCandidates implements Action{
+import static com.sudoku.utils.FieldUtilz.printPositionHelp;
+
+public class MetaDataShow implements Action{
     @Override
     public int id() {
         return 7;
@@ -14,13 +14,13 @@ public class PositionCandidates implements Action{
 
     @Override
     public String name() {
-        return "show position candidates (in dev)";
+        return "show meta data (in dev)";
     }
 
     @Override
     public void execute(Field sudokuField) {
         ConsoleLogger logger = ConsoleLogger.getInstance();
-        Field.printPositionHelp();
+        printPositionHelp();
         Field sField = Field.getInstance();
         Scanner scanner = sField.getScanner();
         try {
@@ -30,14 +30,11 @@ public class PositionCandidates implements Action{
                 logger.toConsole("Accepted values range are 0 ... 80");
                 return;
             }
-            int fieldValue = sField.getField(pos);
+            int fieldValue = sField.getFieldValue(pos);
             logger.toConsole("Position value is = " + fieldValue);
 
-            List<Integer> candidates = sField.getCandidates(pos);
-            logger.toConsole("Candidates for position : ", true);
-            //todo: impl
-
-            logger.toConsole(candidates.toString());
+            logger.toConsole("Meta data for position : ", true);
+            logger.toConsole(sField.getFieldElement(pos).toString());
 
         } catch (Exception e) {
             logger.toConsole(e.getMessage());

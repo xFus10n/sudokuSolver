@@ -2,10 +2,11 @@ package com.sudoku.menu;
 
 import com.sudoku.Field;
 import com.sudoku.logger.ConsoleLogger;
-
 import java.util.Scanner;
 
-public class Position implements Action {
+import static com.sudoku.utils.FieldUtilz.printPositionHelp;
+
+public class SetPosition implements Action {
     private final ConsoleLogger logger = ConsoleLogger.getInstance();
 
     @Override
@@ -20,7 +21,7 @@ public class Position implements Action {
 
     @Override
     public void execute(Field sudokuField) {
-        Field.printPositionHelp();
+        printPositionHelp();
         Scanner scanner = Field.getInstance().getScanner();
         try {
             logger.toConsole("Enter position: ", true);
