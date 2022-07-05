@@ -15,7 +15,6 @@ public final class Field {
 
     public static final  int FIELD_CAPACITY = 81;
     public static final  int DIM_SIZE = 9;
-    private static final int STRING_CAPACITY = 320;
     private static final int SOLVABLE_AMOUNT_ELEMENTS = 17;
     private static final ConsoleLogger logger = ConsoleLogger.getInstance();
     private static final CandidatesHandler candidateReducer = new CandidatesHandler();
@@ -91,39 +90,6 @@ public final class Field {
             }
         }
         return output;
-    }
-
-    /**
-     * Print out sudoku fields
-     */
-    public void showFields() {
-        int[][] fields = getSudokuFields();
-        for (int j = 0, sudokuFieldLength = sudokuFields.length; j < sudokuFieldLength; j++) {
-            int[] arr = fields[j];
-            StringBuilder output = new StringBuilder(STRING_CAPACITY);
-            for (int i = 0, arrLength = arr.length; i < arrLength; i++) {
-                if (i == 0) {
-                    output.append("[ ")
-                          .append(arr[0]);
-                } else if (i == arrLength - 1) {
-                    output.append(' ')
-                          .append(arr[i])
-                          .append(" ]");
-                } else if ((i + 1) % 3 == 0) {
-                    output.append(' ')
-                          .append(arr[i])
-                          .append(" ]  [");
-                } else {
-                    output.append(' ')
-                          .append(arr[i]);
-                }
-            }
-            logger.toConsole(output.toString()
-                                   .replace("0", "*"));
-            if ((j + 1) % 3 == 0) {
-                logger.toConsole("");
-            }
-        }
     }
 
     /**
