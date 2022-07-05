@@ -1,10 +1,12 @@
 package com.sudoku;
 
 import com.sudoku.domain.ElementWithHistory;
+import com.sudoku.domain.Pos;
 import com.sudoku.logger.ConsoleLogger;
 import com.sudoku.properties.Status;
 import com.sudoku.reducers.CandidatesHandler;
 import com.sudoku.reducers.OwnerAPI;
+import com.sudoku.utils.FieldUtilz;
 
 import java.util.*;
 
@@ -14,9 +16,9 @@ public final class Field {
     private static Field fieldInstance;
 
     public static final  int FIELD_CAPACITY = 81;
-    public static final  int DIM_SIZE = 9;
-    private static final int SOLVABLE_AMOUNT_ELEMENTS = 17;
-    private static final ConsoleLogger logger = ConsoleLogger.getInstance();
+    public static final  int           DIM_SIZE                 = 9;
+    public static final  int           SOLVABLE_AMOUNT_ELEMENTS = 17;
+    private static final ConsoleLogger logger                   = ConsoleLogger.getInstance();
     private static final CandidatesHandler candidateReducer = new CandidatesHandler();
 
     private ElementWithHistory[][] sudokuFields;
@@ -133,9 +135,8 @@ public final class Field {
     }
 
     public List<Integer> getPositionCandidates(int position) {
-        int row = position / DIM_SIZE;
-        int col = position - (row * DIM_SIZE);
-        return sudokuFields[row][col].getPositionCandidates();
+        Pos pos = FieldUtilz.getCoordinates(position);
+        return sudokuFields[pos.row][pos.col].getPositionCandidates();
     }
 
     /**
@@ -158,27 +159,23 @@ public final class Field {
      * @return true if set was successful
      */
     public boolean setField(int position, int value) {
-        int row = position / DIM_SIZE;
-        int col = position - (row * DIM_SIZE);
-        return setField(row, col, value, position);
+        Pos pos = FieldUtilz.getCoordinates(position);
+        return setField(pos.row, pos.col, value, position);
     }
 
     public int getFieldValue(int position) {
-        int row = position / DIM_SIZE;
-        int col = position - (row * DIM_SIZE);
-        return sudokuFields[row][col].getElementValue();
+        Pos pos = FieldUtilz.getCoordinates(position);
+        return sudokuFields[pos.row][pos.col].getElementValue();
     }
 
     public ElementWithHistory getFieldElement(int position) {
-        int row = position / DIM_SIZE;
-        int col = position - (row * DIM_SIZE);
-        return sudokuFields[row][col];
+        Pos pos = FieldUtilz.getCoordinates(position);
+        return sudokuFields[pos.row][pos.col];
     }
 
     public void setFieldElementMoveNumber(int position, int counter) {
-        int row = position / DIM_SIZE;
-        int col = position - (row * DIM_SIZE);
-        sudokuFields[row][col].updateCounter(counter);
+        Pos pos = FieldUtilz.getCoordinates(position);
+        sudokuFields[pos.row][pos.col].updateCounter(counter);
     }
 
     /**
@@ -191,10 +188,9 @@ public final class Field {
         }
     }
 
-    public void undoFieldElement(int pos) {
-        int row = pos / DIM_SIZE;
-        int col = pos - (row * DIM_SIZE);
-        sudokuFields[row][col].undo();
+    public void undoFieldElement(int position) {
+        Pos pos = FieldUtilz.getCoordinates(position);
+        sudokuFields[pos.row][pos.col].undo();
         if (counter != 0) counter--;
     }
 
@@ -205,22 +201,6 @@ public final class Field {
         sudokuFields = new ElementWithHistory[DIM_SIZE][DIM_SIZE];
         initSudokuFields();
         counter = 0;
-    }
-
-    public boolean solvable() {
-        int[][] fields = getSudokuFields();
-        int count = 0;
-        for (int[] sudokuField : fields) {
-            for (int i : sudokuField) {
-                if (0 == i) {
-                    count++;
-                }
-            }
-            if (FIELD_CAPACITY - count < SOLVABLE_AMOUNT_ELEMENTS) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public Scanner getScanner() {

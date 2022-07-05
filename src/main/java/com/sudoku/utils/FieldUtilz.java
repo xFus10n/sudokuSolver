@@ -1,10 +1,13 @@
 package com.sudoku.utils;
 
+import com.sudoku.domain.Pos;
 import com.sudoku.logger.ConsoleLogger;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.sudoku.Field.DIM_SIZE;
 
 public final class FieldUtilz {
     private static final ConsoleLogger               logger  = ConsoleLogger.getInstance();
@@ -104,5 +107,10 @@ public final class FieldUtilz {
         logger.toConsole("[ 54, 55, 56 ] [ 57, 58, 59 ]  [ 60, 61, 62 ]");
         logger.toConsole("[ 63, 64, 65 ] [ 66, 67, 68 ]  [ 69, 70, 71 ]");
         logger.toConsole("[ 72, 73, 74 ] [ 75, 76, 77 ]  [ 78, 79, 80 ]");
+    }
+
+    public static Pos getCoordinates(int position){
+        int row = position / DIM_SIZE;
+        return new Pos(row, position - (row * DIM_SIZE));
     }
 }
