@@ -3,6 +3,7 @@ package com.sudoku;
 import com.sudoku.domain.ElementWithHistory;
 import com.sudoku.domain.Pos;
 import com.sudoku.logger.ConsoleLogger;
+import com.sudoku.menu.Show;
 import com.sudoku.properties.Status;
 import com.sudoku.reducers.CandidatesHandler;
 import com.sudoku.reducers.OwnerAPI;
@@ -110,14 +111,16 @@ public final class Field {
         if (col < 0 || col >= DIM_SIZE) {
             return false;
         }
-        if (newValue < 0 || newValue > DIM_SIZE) {
+        if (newValue < 1 || newValue > DIM_SIZE) {
             return false;
         }
         try {
             counter++;
+//            System.out.println("counter = " + counter);
             OwnerAPI ownerAPI = new OwnerAPI(currentPosition, newValue, row, col, getCubeIDbyPosition(currentPosition));
             sudokuFields[row][col].setFieldValue(counter, newValue);
             applyReducers(ownerAPI, counter);
+//            new Show().execute(getInstance());
         } catch (Exception e) {
             return false;
         }
@@ -183,6 +186,7 @@ public final class Field {
      * use 0 as hidden value, if values < 80 all remaining are 0
      */
     public void setFields(List<Integer> values) {
+        resetFields();
         for (int i = 0; i < FIELD_CAPACITY; i++) {
             setField(i, values.get(i));
         }

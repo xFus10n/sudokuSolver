@@ -2,6 +2,7 @@ package com.sudoku;
 
 import com.sudoku.menu.Action;
 import com.sudoku.menu.FieldsFromArguments;
+import com.sudoku.menu.Show;
 import com.sudoku.properties.Arguments;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-public class RowsSliceTest {
+public class ReduceTest {
     private static Field sFields;
 
     @BeforeAll
@@ -25,32 +26,26 @@ public class RowsSliceTest {
         sFields.resetFields();
     }
 
-//    @Test
-//    void testRowsCandidatesCalculation2() {
-//        //assign
-//        String[] inArgs = {"1", "2", "3", "4", "5", "6", "7", "8"};
-//        Arguments.initializeArgumentContainer(inArgs);
-//        Arguments.getInstance();
-//
-//        //act
-//        Action setFields = new FieldsFromArguments();
-//        setFields.execute(sFields);
-//
-//        List<Integer> actCandidates8 = sFields.getCandidates(8);
-//        List<Integer> actCandidates7 = sFields.getCandidates(7);
-//
-//        //assert
-//        assertArrayEquals(List.of(9).toArray(), actCandidates8.toArray());
-//        assertArrayEquals(List.of(8).toArray(), actCandidates7.toArray());
-//
-//        sFields.setField(7, 0);
-//        actCandidates8 = sFields.getCandidates(8);
-//        actCandidates7 = sFields.getCandidates(7);
-//
-//        //assert
-//        assertArrayEquals(List.of(8, 9).toArray(), actCandidates8.toArray());
-//        assertArrayEquals(List.of(8, 9).toArray(), actCandidates7.toArray());
-//    }
+    @Test
+    void testRowsCandidatesCalculation2() {
+        //assign
+        String[] inArgs = {"1", "2", "3", "4", "5", "6", "7", "8"};
+        Arguments.initializeArgumentContainer(inArgs);
+        Arguments.getInstance();
+
+        //act
+        Action setFields = new FieldsFromArguments();
+        setFields.execute(sFields);
+        new Show().execute(sFields);
+        var actCandidates9 = sFields.getPositionCandidates(9);
+        var actCandidates8 = sFields.getPositionCandidates(8);
+
+        //assert
+        System.out.println("actCandidates9 = " + actCandidates9);
+        System.out.println("actCandidates8 = " + actCandidates8);
+        assertArrayEquals(List.of(4, 5, 6, 7, 8, 9).toArray(), actCandidates9.toArray());
+        assertArrayEquals(List.of(9).toArray(), actCandidates8.toArray());
+    }
 //
 //    @Test
 //    void testRowsCandidatesCalculation() {

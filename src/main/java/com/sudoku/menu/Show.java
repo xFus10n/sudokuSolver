@@ -19,12 +19,13 @@ public class Show implements Action{
     @Override
     public void execute(Field sudokuField) {
           showFields(sudokuField);
+//          showCandidates(sudokuField);
     }
 
     /**
      * Print out sudoku fields
      */
-    public void showFields(Field sudokuField) {
+    private static void showFields(Field sudokuField) {
         ConsoleLogger logger = ConsoleLogger.getInstance();
         int[][] fields = sudokuField.getSudokuFields();
         for (int j = 0, sudokuFieldLength = fields.length; j < sudokuFieldLength; j++) {
@@ -52,6 +53,15 @@ public class Show implements Action{
             if ((j + 1) % 3 == 0) {
                 logger.toConsole("");
             }
+        }
+    }
+
+    private static void showCandidates(Field sudokuField) {
+        ConsoleLogger logger = ConsoleLogger.getInstance();
+        for (int i = 1; i < Field.FIELD_CAPACITY + 1; i++) {
+            if (i % 9 != 0) {
+                logger.toConsole("Pos:" + (i - 1) + ' ' + sudokuField.getPositionCandidates((i - 1)) + "; ", true);
+            } else logger.toConsole("Pos:" + (i - 1) + ' ' + sudokuField.getPositionCandidates((i - 1)));
         }
     }
 }
