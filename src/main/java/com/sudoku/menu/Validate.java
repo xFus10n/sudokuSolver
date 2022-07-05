@@ -5,6 +5,8 @@ import com.sudoku.logger.ConsoleLogger;
 
 import java.util.*;
 
+import static com.sudoku.utils.FieldUtilz.getCubePositions;
+
 public class Validate implements Action {
 
     @Override
@@ -89,7 +91,7 @@ public class Validate implements Action {
         Set<Integer> setOfInts = new HashSet<>();
         for (int i = 0; i < Field.DIM_SIZE; i++) {
             setOfInts.clear();
-            for (Integer cubePosition : sudokuField.getCubePositions(i)) {
+            for (Integer cubePosition : getCubePositions(i)) {
                 int element = sudokuField.getFieldValue(cubePosition);
                 if (contains(setOfInts, element)) {
                     return false;
