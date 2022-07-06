@@ -39,10 +39,13 @@ class FieldTest {
 
         //act
         new FieldsFromArguments().execute(sFields);
+        int moveNumber1 = sFields.getMoveNumber(); //81
         new Undo().execute(sFields);
+        int moveNumber2 = sFields.getMoveNumber(); //80
 
         //assert
         assertEquals(Status.VALIDATED, sFields.getStatus());
+        assertEquals(moveNumber2, moveNumber1 - 1);
     }
 
     @Test

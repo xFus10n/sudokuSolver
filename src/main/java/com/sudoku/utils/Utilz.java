@@ -46,4 +46,15 @@ public class Utilz {
             }
         }
     }
+
+    public static void undo(Field sudokuField, int move) {
+        if (sudokuField.getMoveNumber() == 0) return;
+        while (sudokuField.getMoveNumber() != move) {
+            for (int i = 0; i < Field.FIELD_CAPACITY; i++) {
+                sudokuField.undoFieldElement(i);
+            }
+            sudokuField.setMoveNumber(sudokuField.getMoveNumber() - 1);
+        }
+        Validation.validate();
+    }
 }

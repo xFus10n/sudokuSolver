@@ -182,6 +182,14 @@ public final class Field {
         sudokuFields[pos.row][pos.col].updateCounter(counter);
     }
 
+    public int getMoveNumber() {
+        return counter;
+    }
+
+    public void setMoveNumber(int counter) {
+        this.counter = counter;
+    }
+
     /**
      * Set sudoku field from command line
      * use 0 as hidden value, if values < 80 all remaining are 0
@@ -196,7 +204,13 @@ public final class Field {
     public void undoFieldElement(int position) {
         Pos pos = FieldUtilz.getCoordinates(position);
         sudokuFields[pos.row][pos.col].undo();
-        if (counter != 0) counter--;
+    }
+
+    public void undoFieldElement(int position, int move) {
+        Pos pos = FieldUtilz.getCoordinates(position);
+        while (sudokuFields[pos.row][pos.col].getMoveNumber() != move) {
+            sudokuFields[pos.row][pos.col].undo();
+        }
     }
 
     /**

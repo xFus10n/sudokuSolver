@@ -2,11 +2,12 @@ package com.sudoku.menu;
 
 import com.sudoku.Field;
 import com.sudoku.logger.ConsoleLogger;
+import com.sudoku.utils.Validation;
 
 import static com.sudoku.Field.FIELD_CAPACITY;
 
 public class Solve implements Action{
-    public static final  int SOLVABLE_AMOUNT_ELEMENTS = 17;
+    private static final int SOLVABLE_AMOUNT_ELEMENTS = 17;
 
     @Override
     public int id() {
@@ -23,13 +24,12 @@ public class Solve implements Action{
         boolean solvable = solvable(sudokuField);
         ConsoleLogger logger = ConsoleLogger.getInstance();
         logger.toConsole("Sudoku is solvable = " + solvable);
-//        for (int i = 0; i < Field.FIELD_CAPACITY; i++) {
-//            List<Integer> candidates = sudokuField.getCandidates(i);
-//            if ((sudokuField.getField(i) == 0) && (candidates.size() == 1)) {
-//                logger.toConsole("Position: " + i + " has only one value = " + candidates.get(0));
-//            }
+
+//        int moveNumber = sudokuField.getMoveNumber();
+//        for (int i = 0; i < FIELD_CAPACITY; i++) {
+//            sudokuField.undoFieldElement(i);
 //        }
-        //todo: implement
+//        Validation.validate();
 
     }
 
