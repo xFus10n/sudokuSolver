@@ -4,9 +4,10 @@ import com.sudoku.Field;
 import com.sudoku.logger.ConsoleLogger;
 
 import static com.sudoku.Field.FIELD_CAPACITY;
-import static com.sudoku.Field.SOLVABLE_AMOUNT_ELEMENTS;
 
 public class Solve implements Action{
+    public static final  int SOLVABLE_AMOUNT_ELEMENTS = 17;
+
     @Override
     public int id() {
         return 6;

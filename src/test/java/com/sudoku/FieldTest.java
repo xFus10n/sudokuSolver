@@ -25,7 +25,7 @@ class FieldTest {
 
         //act
         new FieldsFromArguments().execute(sFields);
-        new Validate().execute(sFields);
+        new ShowStatus().execute(sFields);
 
         //assert
         assertEquals(Status.SOLVED, sFields.getStatus());
@@ -40,7 +40,6 @@ class FieldTest {
         //act
         new FieldsFromArguments().execute(sFields);
         new Undo().execute(sFields);
-        new Validate().execute(sFields);
 
         //assert
         assertEquals(Status.VALIDATED, sFields.getStatus());
@@ -55,7 +54,7 @@ class FieldTest {
         //act
         new FieldsFromArguments().execute(sFields);
         sFields.setField(80, 9);
-        new Validate().execute(sFields);
+        new ShowStatus().execute(sFields);
 
         //assert
         assertEquals(Status.FAILED, sFields.getStatus());
@@ -93,6 +92,7 @@ class FieldTest {
         var initialFields = new int[9][9];
         sFields.resetFields();
         assertArrayEquals(initialFields, Field.getInstance().getSudokuFields());
+        assertEquals(Status.DEFAULT, sFields.getStatus());
     }
 
     @Test
@@ -110,19 +110,20 @@ class FieldTest {
 
         //assert
         assertArrayEquals(expectedFields, sFields.getSudokuFields());
+        assertEquals(Status.VALIDATED, sFields.getStatus());
     }
 
     @Test
-    void testSetFieldsFromArguments2() {
+    void testSetFieldsFromArgumentsShouldSetStatusToFailed() {
         //assign
         String[] inArgs = {"1", "2", "3", "4", "5", "6", "7", "8", "9","0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
                            "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9","0", "0", "0", "0", "0", "0", "0", "0", "0",
                            "1", "2", "3", "4", "5", "6", "7", "8", "9","0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
         Arguments.initializeArgumentContainer(inArgs);
         Arguments.getInstance();
-        int[][] expectedFields = {{1,2,3,4,5,6,7,8,9}, {0,0,0,0,0,0,0,0,0},{1,2,3,4,5,6,7,8,9},
-                                  {0,0,0,0,0,0,0,0,0}, {1,2,3,4,5,6,7,8,9},{0,0,0,0,0,0,0,0,0},
-                                  {1,2,3,4,5,6,7,8,9}, {0,0,0,0,0,0,0,0,0},{1,2,3,4,5,6,7,8,9}};
+        int[][] expectedFields = {{1,2,3,4,5,6,7,8,9}, {0,0,0,0,0,0,0,0,0},{1,0,0,0,0,0,0,0,0},
+                                  {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0},
+                                  {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0}};
 
         //act
         Action setFields = new FieldsFromArguments();
@@ -130,5 +131,6 @@ class FieldTest {
 
         //assert
         assertArrayEquals(expectedFields, sFields.getSudokuFields());
+        assertEquals(Status.FAILED, sFields.getStatus());
     }
 }

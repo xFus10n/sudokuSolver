@@ -3,10 +3,12 @@ package com.sudoku;
 import com.sudoku.domain.ElementWithHistory;
 import com.sudoku.domain.Pos;
 import com.sudoku.logger.ConsoleLogger;
+import com.sudoku.menu.ShowStatus;
 import com.sudoku.properties.Status;
 import com.sudoku.reducers.CandidatesHandler;
 import com.sudoku.reducers.OwnerAPI;
 import com.sudoku.utils.FieldUtilz;
+import com.sudoku.utils.Validation;
 
 import java.util.*;
 
@@ -16,10 +18,10 @@ public final class Field {
     private static Field fieldInstance;
 
     public static final  int FIELD_CAPACITY = 81;
-    public static final  int           DIM_SIZE                 = 9;
-    public static final  int           SOLVABLE_AMOUNT_ELEMENTS = 17;
+    public static final  int DIM_SIZE = 9;
     private static final ConsoleLogger logger                   = ConsoleLogger.getInstance();
     private static final CandidatesHandler candidateReducer = new CandidatesHandler();
+    private static final ShowStatus        valid            = new ShowStatus();
 
     private ElementWithHistory[][] sudokuFields;
     private final Scanner scanner;
@@ -104,6 +106,7 @@ public final class Field {
      * @return true if set was successful
      */
     private boolean setField(int row, int col, int newValue, int currentPosition) {
+        if (status == Status.FAILED) return false;
         if (row < 0 || row >= DIM_SIZE) {
             return false;
         }
@@ -115,11 +118,10 @@ public final class Field {
         }
         try {
             counter++;
-//            System.out.println("counter = " + counter);
             OwnerAPI ownerAPI = new OwnerAPI(currentPosition, newValue, row, col, getCubeIDbyPosition(currentPosition));
             sudokuFields[row][col].setFieldValue(counter, newValue);
             applyReducers(ownerAPI, counter);
-//            new Show().execute(getInstance());
+            Validation.validate();
         } catch (Exception e) {
             return false;
         }
@@ -204,6 +206,7 @@ public final class Field {
         sudokuFields = new ElementWithHistory[DIM_SIZE][DIM_SIZE];
         initSudokuFields();
         counter = 0;
+        status = Status.DEFAULT;
     }
 
     public Scanner getScanner() {
