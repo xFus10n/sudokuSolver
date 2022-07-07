@@ -4,47 +4,11 @@ import com.sudoku.Field;
 
 import java.util.*;
 
-public class Utilz {
-    public static  <T> ArrayList<T> makeMutable(List<T> inList){
-        return new ArrayList<>(inList);
-    }
+public final class Utilz {
+    private final PickInt rndInt = new PickInt();
 
-    /**
-     * Values in a row that has only one candidate for particular position
-     * should be removed as a candidates for newly reset position
-     * @param filter List of values for removal
-     * @param pos reset position
-     */
-    public static void removeCertainCandidates(List<Integer> filter, int pos, Map<Integer, List<Integer>> candidatesMap) {
-        List<Integer> values = makeMutable(candidatesMap.get(pos));
-        values.removeAll(filter);
-        candidatesMap.replace(pos, values);
-    }
-
-    public static List<Integer> getFilterValues(int previousOwnerPosition, int previousOwner, List<Integer> positions, Map<Integer, List<Integer>> candidatesMap) {
-        Field sField = Field.getInstance();
-        List<Integer> valuesToFilterOut = new ArrayList<>();
-        for (Integer position : positions) {
-            if ((position != previousOwnerPosition) && (sField.isDefined(position))) {
-                List<Integer> values = candidatesMap.getOrDefault(position, Arrays.asList());
-                valuesToFilterOut.add(values.get(0));
-            }
-        }
-        return valuesToFilterOut;
-    }
-
-    public static void appendCandidate(int previousOwnerPosition, int previousOwner, List<Integer> positions, Map<Integer, List<Integer>> candidatesMap) {
-        Field sField = Field.getInstance();
-        for (Integer position : positions) {
-            if (position != previousOwnerPosition) {
-                if (!sField.isDefined(position)) {
-                    List<Integer> values = candidatesMap.getOrDefault(position, Arrays.asList());
-                    values.add(previousOwner);
-                    Collections.sort(values);
-                    candidatesMap.replace(position, values);
-                }
-            }
-        }
+    public static int chooseRandomInteger(List<Integer> pickupList) {
+        return new PickInt().get(pickupList);
     }
 
     public static void undo(Field sudokuField, int move) {
@@ -56,5 +20,24 @@ public class Utilz {
             sudokuField.setMoveNumber(sudokuField.getMoveNumber() - 1);
         }
         Validation.validate();
+    }
+
+    abstract static class pickRandomValue<T extends Number> {
+        private static final Random rnd = new Random();
+        T get(List<T> list) {
+            if (list.size() == 1) return list.get(0);
+            if (list.isEmpty()) return getDefault();
+            int position = rnd.nextInt(list.size());
+            return list.get(position);
+        }
+
+        abstract T getDefault();
+    }
+
+    private static class PickInt extends pickRandomValue<Integer> {
+        @Override
+        Integer getDefault() {
+            return 0;
+        }
     }
 }

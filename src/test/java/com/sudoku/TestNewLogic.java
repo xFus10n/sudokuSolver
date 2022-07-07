@@ -2,34 +2,46 @@ package com.sudoku;
 
 import com.sudoku.domain.ElementWithHistory;
 import com.sudoku.domain.FieldElement;
+import com.sudoku.utils.Utilz;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestNewLogic {
 
     @Test
     void testHistory() {
         ElementWithHistory elementWithHistory = new ElementWithHistory(0);
-        System.out.println("fieldElement0 = " + elementWithHistory);
-
         elementWithHistory.reduceFieldCandidates(9, 1);
-        System.out.println("fieldElement1 = " + elementWithHistory);
-
         elementWithHistory.reduceFieldCandidates(3);
-        System.out.println("fieldElement2 = " + elementWithHistory);
-
         elementWithHistory.updateCounter(1);
-        System.out.println("fieldElement3 = " + elementWithHistory);
-
         elementWithHistory.setFieldValue(2, 2);
-        System.out.println("fieldElement4 = " + elementWithHistory);
-
-        System.out.println("--------------------------------");
 
         FieldElement history2 = elementWithHistory.getHistory(2);
-        System.out.println("history2 = " + history2);
+        assertEquals(2, history2.getValue());
+        assertEquals(List.of(2), history2.getCandidates());
+        assertEquals(2, history2.getMoveNumber());
+
         FieldElement history1 = elementWithHistory.getHistory(1);
-        System.out.println("history1 = " + history1);
+        assertEquals(0, history1.getValue());
+        assertEquals(List.of(2, 4, 5, 6, 7, 8), history1.getCandidates());
+        assertEquals(1, history1.getMoveNumber());
+
         FieldElement history0 = elementWithHistory.getHistory(0);
-        System.out.println("history0 = " + history0);
+        assertEquals(0, history0.getValue());
+        assertEquals(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9), history0.getCandidates());
+        assertEquals(0, history0.getMoveNumber());
+    }
+
+    @Test
+    void testRandomizer() {
+        assertEquals(0, Utilz.chooseRandomInteger(List.of()));
+        assertEquals(1, Utilz.chooseRandomInteger(List.of(1)));
+        int rndInt = Utilz.chooseRandomInteger(List.of(1, 2));
+        if (rndInt != 1) {
+            assertEquals(2, rndInt);
+        } else assertEquals(1, rndInt);
     }
 }
