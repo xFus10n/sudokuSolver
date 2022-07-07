@@ -5,10 +5,10 @@ import com.sudoku.Field;
 import java.util.*;
 
 public final class Utilz {
-    private final PickInt rndInt = new PickInt();
+    private static final PickInt rndInt = new PickInt();
 
     public static int chooseRandomInteger(List<Integer> pickupList) {
-        return new PickInt().get(pickupList);
+        return rndInt.get(pickupList);
     }
 
     public static void undo(Field sudokuField, int move) {
