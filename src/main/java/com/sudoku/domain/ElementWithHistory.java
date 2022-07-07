@@ -18,7 +18,7 @@ public class ElementWithHistory {
         if (fieldElement.getMoveNumber() == 0) return;
         FieldElement previousFieldElement = history.get(fieldElement.getMoveNumber() - 1);
         history.remove(fieldElement.getMoveNumber());
-        fieldElement = previousFieldElement;
+        fieldElement = previousFieldElement.clone();
     }
 
     public void setFieldValue(int counter, int value) {
