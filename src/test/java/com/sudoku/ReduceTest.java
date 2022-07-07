@@ -57,34 +57,53 @@ public class ReduceTest {
         assertArrayEquals(List.of(9).toArray(), actCandidates8.toArray());
     }
 
-    @Test
-    void testUndoToSpecificMove() {
-        //assign
-        Arguments.initializeArgumentContainer(args.split(" "));
-        Arguments.getInstance();
-
-        //act
-        new FieldsFromArguments().execute(sFields);
-        new Show().execute(sFields);
-        new ShowStatus().execute(sFields);
-        int moveNumber = sFields.getMoveNumber();
-        System.out.println("Move number : " + moveNumber);
-        System.out.println("----------------------------");
-
-        sFields.setField(3, 2);
-        sFields.setField(5, 7);
-        sFields.setField(12, 4);
-        new Show().execute(sFields);
-        new ShowStatus().execute(sFields);
-        int moveNumberX = sFields.getMoveNumber();
-        System.out.println("Move number : " + moveNumberX);
-        System.out.println("----------------------------");
-
-        Utilz.undo(sFields, moveNumber);
-
-        new Show().execute(sFields);
-        new ShowStatus().execute(sFields);
-        moveNumberX = sFields.getMoveNumber();
-        System.out.println("Move number : " + moveNumberX);
-    }
+//    @Test
+//    void testUndoToSpecificMove() {
+//        //assign
+//        Arguments.initializeArgumentContainer(args.split(" "));
+//        Arguments.getInstance();
+//
+//        //act
+//        new FieldsFromArguments().execute(sFields);
+//        new Show().execute(sFields);
+//        new ShowStatus().execute(sFields);
+//        int moveNumber = sFields.getMoveNumber();
+//        System.out.println("Move number : " + moveNumber);
+//        System.out.println("1----------------------------");
+//
+//        sFields.setField(3, 2); //33
+//        sFields.setField(5, 7); //34
+//        sFields.setField(12, 4); //35
+//        new Show().execute(sFields);
+//        new ShowStatus().execute(sFields);
+//        int moveNumberX = sFields.getMoveNumber();
+//        System.out.println("Move number : " + moveNumberX);
+//        System.out.println("2----------------------------");
+//
+//        Utilz.undo(sFields, moveNumber);
+//
+//        new Show().execute(sFields);
+//        new ShowStatus().execute(sFields);
+//        moveNumberX = sFields.getMoveNumber();
+//        System.out.println("Move number : " + moveNumberX);
+//        System.out.println("3----------------------------");
+//
+//
+//        sFields.setField(3, 2); //33
+//        sFields.setField(5, 7); //34
+//        sFields.setField(12, 4); //35
+//        new Show().execute(sFields);
+//        new ShowStatus().execute(sFields);
+//        moveNumberX = sFields.getMoveNumber();
+//        System.out.println("Move number : " + moveNumberX);
+//        System.out.println("4----------------------------");
+//
+//        Utilz.undo(sFields, moveNumber);
+//
+//        new Show().execute(sFields);
+//        new ShowStatus().execute(sFields);
+//        moveNumberX = sFields.getMoveNumber();
+//        System.out.println("Move number : " + moveNumberX);
+//        System.out.println("5----------------------------");
+//    }
 }

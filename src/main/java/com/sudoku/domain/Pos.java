@@ -7,4 +7,12 @@ public class Pos {
         this.row = row;
         this.col = col;
     }
+
+    @Override
+    public String toString() {
+        return "Pos{" +
+                "row=" + row +
+                ", col=" + col +
+                '}';
+    }
 }

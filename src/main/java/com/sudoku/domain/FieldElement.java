@@ -37,7 +37,7 @@ public class FieldElement implements Cloneable {
     }
 
     public void setMoveNumber(int counter) {
-        actionType = ActionType.REDUCE;
+//        actionType = ActionType.REDUCE;
         moveCount = counter;
     }
 
@@ -54,6 +54,10 @@ public class FieldElement implements Cloneable {
 
     public int getMoveNumber(){
         return moveCount;
+    }
+
+    public ActionType getActionType() {
+        return actionType;
     }
 
     @Override
@@ -76,5 +80,22 @@ public class FieldElement implements Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        FieldElement that = (FieldElement) o;
+        return position == that.position && value == that.value && moveCount == that.moveCount && candidates.equals(that.candidates) && actionType == that.actionType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(position, value, candidates, moveCount, actionType);
     }
 }

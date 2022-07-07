@@ -14,7 +14,7 @@ public class MetaDataShow implements Action{
 
     @Override
     public String name() {
-        return "show meta data (in dev)";
+        return "show meta data";
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.sudoku;
 
+import com.sudoku.domain.ActionType;
 import com.sudoku.domain.ElementWithHistory;
 import com.sudoku.domain.Pos;
 import com.sudoku.logger.ConsoleLogger;
@@ -132,8 +133,10 @@ public final class Field {
         for (int i = 0; i < FIELD_CAPACITY; i++) {
             if (i != ownerAPI.position) { // don't update just set value
                 ElementWithHistory fieldElement = getFieldElement(i);
-                candidateReducer.reduce(fieldElement, ownerAPI);
-                setFieldElementMoveNumber(i, counter);
+                if (fieldElement.getActionType() != ActionType.SET) {
+                    candidateReducer.reduce(fieldElement, ownerAPI);
+                }
+                fieldElement.updateCounter(counter);
             }
         }
     }
@@ -208,9 +211,14 @@ public final class Field {
 
     public void undoFieldElement(int position, int move) {
         Pos pos = FieldUtilz.getCoordinates(position);
-        while (sudokuFields[pos.row][pos.col].getMoveNumber() != move) {
+        do {
             sudokuFields[pos.row][pos.col].undo();
-        }
+        } while (sudokuFields[pos.row][pos.col].getMoveNumber() != move);
+    }
+
+    public ActionType getActionType(int position) {
+        Pos pos = FieldUtilz.getCoordinates(position);
+        return sudokuFields[pos.row][pos.col].getActionType();
     }
 
     /**

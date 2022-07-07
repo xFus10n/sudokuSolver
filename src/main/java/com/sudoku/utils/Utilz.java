@@ -11,22 +11,36 @@ public final class Utilz {
         return rndInt.get(pickupList);
     }
 
-    public static void undo(Field sudokuField, int move) {
-        if (sudokuField.getMoveNumber() == 0) return;
-        while (sudokuField.getMoveNumber() != move) {
-            for (int i = 0; i < Field.FIELD_CAPACITY; i++) {
-                sudokuField.undoFieldElement(i);
-            }
-            sudokuField.setMoveNumber(sudokuField.getMoveNumber() - 1);
+    public static List<Integer> getShuffledList() {
+        List<Integer> shuffledList = new ArrayList<>(Field.FIELD_CAPACITY);
+        for (int i = 0; i < Field.FIELD_CAPACITY; i++) {
+            shuffledList.add(i);
         }
+        Collections.shuffle(shuffledList);
+        return shuffledList;
+    }
+
+    public static void undo(Field sudokuField, int move) {
+        if (sudokuField.getMoveNumber() == 0) {
+            return;
+        }
+        for (int i = 0; i < Field.FIELD_CAPACITY; i++) {
+            sudokuField.undoFieldElement(i, move);
+        }
+        sudokuField.setMoveNumber(move);
         Validation.validate();
     }
 
     abstract static class pickRandomValue<T extends Number> {
         private static final Random rnd = new Random();
+
         T get(List<T> list) {
-            if (list.size() == 1) return list.get(0);
-            if (list.isEmpty()) return getDefault();
+            if (list.size() == 1) {
+                return list.get(0);
+            }
+            if (list.isEmpty()) {
+                return getDefault();
+            }
             int position = rnd.nextInt(list.size());
             return list.get(position);
         }

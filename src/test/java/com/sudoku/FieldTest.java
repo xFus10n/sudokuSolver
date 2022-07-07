@@ -1,8 +1,11 @@
 package com.sudoku;
 
+import com.sudoku.domain.Pos;
 import com.sudoku.menu.*;
 import com.sudoku.properties.Arguments;
 import com.sudoku.properties.Status;
+import com.sudoku.utils.FieldUtilz;
+import com.sudoku.utils.Utilz;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -135,5 +138,13 @@ class FieldTest {
         //assert
         assertArrayEquals(expectedFields, sFields.getSudokuFields());
         assertEquals(Status.FAILED, sFields.getStatus());
+    }
+
+    @Test
+    void testGetRelativePosition() {
+        int absolutePosition = 75;
+        Pos pos = FieldUtilz.getCoordinates(absolutePosition);
+        System.out.println("pos = " + pos);
+
     }
 }
