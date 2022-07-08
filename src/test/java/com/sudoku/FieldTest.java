@@ -5,7 +5,6 @@ import com.sudoku.menu.*;
 import com.sudoku.properties.Arguments;
 import com.sudoku.properties.Status;
 import com.sudoku.utils.FieldUtilz;
-import com.sudoku.utils.Utilz;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FieldTest {
     private static final String inArgsSolvedSudoku = "1 2 3 4 5 6 7 8 9 4 5 6 7 8 9 1 2 3 7 8 9 1 2 3 4 5 6 2 3 4 5 6 7 8 9 1 5 6 7 8 9 1 2 3 4 8 9 1 2 3 4 5 6 7 3 4 5 6 7 8 9 1 2 6 7 8 9 1 2 3 4 5 9 1 2 3 4 5 6 7 8";
+    private static final String inArgsEasySudoku   = "0 0 5 3 6 0 4 0 0 9 6 2 0 0 4 0 7 0 3 0 4 0 2 9 0 6 0 8 2 0 9 4 0 0 1 3 0 4 9 0 3 0 0 5 7 0 0 0 2 0 0 9 8 0 4 0 6 0 0 1 0 0 2 0 0 0 6 9 3 0 0 5 0 0 3 0 8 0 0 0 0";
     private static final Field  sFields            = Field.getInstance();
 
     @BeforeEach

@@ -1,6 +1,7 @@
 package com.sudoku.utils;
 
 import com.sudoku.Field;
+import com.sudoku.properties.Status;
 
 import java.util.*;
 
@@ -21,6 +22,7 @@ public final class Utilz {
     }
 
     public static void undo(Field sudokuField, int move) {
+        if (sudokuField.getMoveNumber() == move) return;
         if (sudokuField.getMoveNumber() == 0) {
             return;
         }
@@ -28,6 +30,18 @@ public final class Utilz {
             sudokuField.undoFieldElement(i, move);
         }
         sudokuField.setMoveNumber(move);
+        Validation.validate();
+    }
+
+    public static void undo(Field sudokuField, int move, boolean validatedStatus) {
+        if (sudokuField.getMoveNumber() == 0) {
+            return;
+        }
+        for (int i = 0; i < Field.FIELD_CAPACITY; i++) {
+            sudokuField.undoFieldElement(i, move);
+        }
+        sudokuField.setMoveNumber(move);
+        sudokuField.setValidatedStatus();
         Validation.validate();
     }
 

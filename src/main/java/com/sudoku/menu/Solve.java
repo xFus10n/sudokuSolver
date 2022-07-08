@@ -4,6 +4,7 @@ import com.sudoku.Field;
 import com.sudoku.domain.ActionType;
 import com.sudoku.logger.ConsoleLogger;
 import com.sudoku.properties.Status;
+import com.sudoku.utils.FieldUtilz;
 import com.sudoku.utils.Utilz;
 import com.sudoku.utils.Validation;
 
@@ -21,7 +22,7 @@ public class Solve implements Action{
 
     @Override
     public String name() {
-        return "solve sudoku puzzle (in dev)";
+        return "solve sudoku puzzle";
     }
 
     @Override
@@ -37,20 +38,22 @@ public class Solve implements Action{
         Show show = new Show();
         try {
             while (sudokuField.getStatus() != Status.SOLVED) {
-                System.out.println("Iteration : " + iterations++ + "----------------------------------");
+                ConsoleLogger.getInstance().toConsole("Iteration : " + iterations++ + '\r', true);
                 for (int position : Utilz.getShuffledList()){
-                    System.out.println("position = " + position);
-                    show.execute(sudokuField);
                     if (sudokuField.getFieldValue(position) != 0) continue;
                     List<Integer> positionCandidates = sudokuField.getPositionCandidates(position);
+                    if (positionCandidates.isEmpty()) {
+                        Utilz.undo(sudokuField, initialMoveNumber, true);
+                        break;
+                    }
                     int pickupNumber = Utilz.chooseRandomInteger(positionCandidates);
                     sudokuField.setField(position, pickupNumber);
-                    System.out.println(sudokuField.getStatus() + "********************************");
                     if (sudokuField.getStatus() == Status.FAILED) {
-                        Utilz.undo(sudokuField, initialMoveNumber);
+                        Utilz.undo(sudokuField, initialMoveNumber, true);
+                        break;
                     }
                 }
-                Utilz.undo(sudokuField, initialMoveNumber);
+                if (sudokuField.getStatus() != Status.SOLVED) Utilz.undo(sudokuField, initialMoveNumber);
             }
         } catch (Exception e) {
             e.printStackTrace();
