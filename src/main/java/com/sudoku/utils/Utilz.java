@@ -33,6 +33,18 @@ public final class Utilz {
         Validation.validate();
     }
 
+    public static void undo(Field sudokuField) {
+        if (sudokuField.getMoveNumber() == 0) {
+            return;
+        }
+        for (int i = 0; i < Field.FIELD_CAPACITY; i++) {
+            sudokuField.undoFieldElement(i);
+        }
+        int moveNumber = sudokuField.getMoveNumber();
+        sudokuField.setMoveNumber(moveNumber - 1);
+        Validation.validate();
+    }
+
     public static void undo(Field sudokuField, int move, boolean validatedStatus) {
         if (sudokuField.getMoveNumber() == 0) {
             return;
