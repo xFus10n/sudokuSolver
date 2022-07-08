@@ -33,7 +33,7 @@ public class Menu {
                if (option < 0 || option > menuSize) continue;
                services.get(option).execute(Field.getInstance());
             } catch (Exception e) {
-                consoleLogger.toConsole(e.getMessage());
+                consoleLogger.toConsole(e.toString());
                 System.exit(1);
             }
         }

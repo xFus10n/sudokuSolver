@@ -1,27 +1,16 @@
-package com.sudoku.menu;
+package com.sudoku.utils;
 
 import com.sudoku.Field;
-import com.sudoku.logger.ConsoleLogger;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.sudoku.utils.FieldUtilz.getCubePositions;
 
-public class Validate implements Action {
+public final class Validation {
 
-    @Override
-    public int id() {
-        return 5;
-    }
-
-    @Override
-    public String name() {
-        return "validate sudoku field";
-    }
-
-    @Override
-    public void execute(Field sudokuField) {
-
+    public static void validate() {
+        Field sudokuField = Field.getInstance();
         boolean hasHiddenElements = setHasHiddenElements(sudokuField);
         boolean rowCheck = rowCheck(sudokuField);
         boolean sliceCheck = sliceCheck(sudokuField);
@@ -37,10 +26,9 @@ public class Validate implements Action {
                 sudokuField.setSolvedStatus();
             } else sudokuField.setFailedStatus();
         }
-        ConsoleLogger.getInstance().toConsole("sudoku fields status is : " + sudokuField.getStatus());
     }
 
-    private boolean setHasHiddenElements(Field sudokuField) {
+    private static boolean setHasHiddenElements(Field sudokuField) {
         int[][] sudokuFields = sudokuField.getSudokuFields();
         for (int i = 0; i < Field.DIM_SIZE; i++) {
             for (int j = 0; j < Field.DIM_SIZE; j++) {
@@ -52,7 +40,7 @@ public class Validate implements Action {
         return false;
     }
 
-    private boolean rowCheck(Field sudokuField) {
+    private static boolean rowCheck(Field sudokuField) {
         Set<Integer> setOfInts = new HashSet<>();
         for (int[] row : sudokuField.getSudokuFields()) {
             setOfInts.clear();
@@ -65,7 +53,7 @@ public class Validate implements Action {
         return true;
     }
 
-    private boolean sliceCheck(Field sudokuField) {
+    private static boolean sliceCheck(Field sudokuField) {
         Set<Integer> setOfInts = new HashSet<>();
         int[][] sudokuFields = sudokuField.getSudokuFields();
         for (int col = 0; col < sudokuFields.length; col++) {
@@ -80,14 +68,14 @@ public class Validate implements Action {
         return true;
     }
 
-    private boolean contains(Set<Integer> setOfInts, int element) {
+    private static boolean contains(Set<Integer> setOfInts, int element) {
         if (element != 0) {
             return !setOfInts.add(element);
         }
         return false;
     }
 
-    private boolean cubeCheck(Field sudokuField) {
+    private static boolean cubeCheck(Field sudokuField) {
         Set<Integer> setOfInts = new HashSet<>();
         for (int i = 0; i < Field.DIM_SIZE; i++) {
             setOfInts.clear();

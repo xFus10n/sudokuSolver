@@ -1,15 +1,15 @@
 package com.sudoku.domain;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class ElementWithHistory {
     private final Map<Integer,FieldElement> history;
     private       FieldElement              fieldElement;
 
     public ElementWithHistory(int position) {
-        history = new HashMap<>();
+        history = new TreeMap<>();
         fieldElement = new FieldElement(position);
         history.put(fieldElement.getMoveNumber(), fieldElement.clone());
     }
@@ -17,8 +17,8 @@ public class ElementWithHistory {
     public void undo(){
         if (fieldElement.getMoveNumber() == 0) return;
         FieldElement previousFieldElement = history.get(fieldElement.getMoveNumber() - 1);
-        history.remove(previousFieldElement.getMoveNumber());
-        fieldElement = previousFieldElement;
+        history.remove(fieldElement.getMoveNumber());
+        fieldElement = previousFieldElement.clone();
     }
 
     public void setFieldValue(int counter, int value) {
@@ -51,6 +51,10 @@ public class ElementWithHistory {
 
     public List<Integer> getPositionCandidates(){
         return fieldElement.getCandidates();
+    }
+
+    public ActionType getActionType(){
+        return fieldElement.getActionType();
     }
 
     @Override

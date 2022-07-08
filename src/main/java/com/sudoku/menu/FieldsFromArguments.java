@@ -2,6 +2,8 @@ package com.sudoku.menu;
 
 import com.sudoku.Field;
 import com.sudoku.properties.Arguments;
+import com.sudoku.properties.SysProperties;
+
 import java.util.Collections;
 
 public class FieldsFromArguments implements Action{

@@ -1,8 +1,10 @@
 package com.sudoku;
 
+import com.sudoku.domain.Pos;
 import com.sudoku.menu.*;
 import com.sudoku.properties.Arguments;
 import com.sudoku.properties.Status;
+import com.sudoku.utils.FieldUtilz;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FieldTest {
     private static final String inArgsSolvedSudoku = "1 2 3 4 5 6 7 8 9 4 5 6 7 8 9 1 2 3 7 8 9 1 2 3 4 5 6 2 3 4 5 6 7 8 9 1 5 6 7 8 9 1 2 3 4 8 9 1 2 3 4 5 6 7 3 4 5 6 7 8 9 1 2 6 7 8 9 1 2 3 4 5 9 1 2 3 4 5 6 7 8";
+    private static final String inArgsEasySudoku   = "0 0 5 3 6 0 4 0 0 9 6 2 0 0 4 0 7 0 3 0 4 0 2 9 0 6 0 8 2 0 9 4 0 0 1 3 0 4 9 0 3 0 0 5 7 0 0 0 2 0 0 9 8 0 4 0 6 0 0 1 0 0 2 0 0 0 6 9 3 0 0 5 0 0 3 0 8 0 0 0 0";
+    private static final String inArgsMediSudoku   = "2 5 0 0 0 3 0 9 1 3 0 9 0 0 0 7 2 0 0 0 1 0 0 6 3 0 0 0 0 0 0 6 8 0 0 3 0 1 0 0 4 0 0 0 0 6 0 3 0 0 0 0 5 0 1 3 2 0 0 0 0 7 0 0 0 0 0 0 4 0 6 0 7 6 4 0 1 0 0 0 0";
     private static final Field  sFields            = Field.getInstance();
 
     @BeforeEach
@@ -25,7 +29,7 @@ class FieldTest {
 
         //act
         new FieldsFromArguments().execute(sFields);
-        new Validate().execute(sFields);
+        new ShowStatus().execute(sFields);
 
         //assert
         assertEquals(Status.SOLVED, sFields.getStatus());
@@ -39,11 +43,13 @@ class FieldTest {
 
         //act
         new FieldsFromArguments().execute(sFields);
+        int moveNumber1 = sFields.getMoveNumber(); //81
         new Undo().execute(sFields);
-        new Validate().execute(sFields);
+        int moveNumber2 = sFields.getMoveNumber(); //80
 
         //assert
         assertEquals(Status.VALIDATED, sFields.getStatus());
+        assertEquals(moveNumber2, moveNumber1 - 1);
     }
 
     @Test
@@ -55,7 +61,7 @@ class FieldTest {
         //act
         new FieldsFromArguments().execute(sFields);
         sFields.setField(80, 9);
-        new Validate().execute(sFields);
+        new ShowStatus().execute(sFields);
 
         //assert
         assertEquals(Status.FAILED, sFields.getStatus());
@@ -93,6 +99,7 @@ class FieldTest {
         var initialFields = new int[9][9];
         sFields.resetFields();
         assertArrayEquals(initialFields, Field.getInstance().getSudokuFields());
+        assertEquals(Status.DEFAULT, sFields.getStatus());
     }
 
     @Test
@@ -110,19 +117,20 @@ class FieldTest {
 
         //assert
         assertArrayEquals(expectedFields, sFields.getSudokuFields());
+        assertEquals(Status.VALIDATED, sFields.getStatus());
     }
 
     @Test
-    void testSetFieldsFromArguments2() {
+    void testSetFieldsFromArgumentsShouldSetStatusToFailed() {
         //assign
         String[] inArgs = {"1", "2", "3", "4", "5", "6", "7", "8", "9","0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
                            "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9","0", "0", "0", "0", "0", "0", "0", "0", "0",
                            "1", "2", "3", "4", "5", "6", "7", "8", "9","0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
         Arguments.initializeArgumentContainer(inArgs);
         Arguments.getInstance();
-        int[][] expectedFields = {{1,2,3,4,5,6,7,8,9}, {0,0,0,0,0,0,0,0,0},{1,2,3,4,5,6,7,8,9},
-                                  {0,0,0,0,0,0,0,0,0}, {1,2,3,4,5,6,7,8,9},{0,0,0,0,0,0,0,0,0},
-                                  {1,2,3,4,5,6,7,8,9}, {0,0,0,0,0,0,0,0,0},{1,2,3,4,5,6,7,8,9}};
+        int[][] expectedFields = {{1,2,3,4,5,6,7,8,9}, {0,0,0,0,0,0,0,0,0},{1,0,0,0,0,0,0,0,0},
+                                  {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0},
+                                  {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0}};
 
         //act
         Action setFields = new FieldsFromArguments();
@@ -130,5 +138,14 @@ class FieldTest {
 
         //assert
         assertArrayEquals(expectedFields, sFields.getSudokuFields());
+        assertEquals(Status.FAILED, sFields.getStatus());
+    }
+
+    @Test
+    void testGetRelativePosition() {
+        int absolutePosition = 75;
+        Pos pos = FieldUtilz.getCoordinates(absolutePosition);
+        System.out.println("pos = " + pos);
+
     }
 }

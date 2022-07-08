@@ -1,49 +1,83 @@
 package com.sudoku.utils;
 
 import com.sudoku.Field;
+import com.sudoku.properties.Status;
 
 import java.util.*;
 
-public class Utilz {
-    public static  <T> ArrayList<T> makeMutable(List<T> inList){
-        return new ArrayList<>(inList);
+public final class Utilz {
+    private static final PickInt rndInt = new PickInt();
+
+    public static int chooseRandomInteger(List<Integer> pickupList) {
+        return rndInt.get(pickupList);
     }
 
-    /**
-     * Values in a row that has only one candidate for particular position
-     * should be removed as a candidates for newly reset position
-     * @param filter List of values for removal
-     * @param pos reset position
-     */
-    public static void removeCertainCandidates(List<Integer> filter, int pos, Map<Integer, List<Integer>> candidatesMap) {
-        List<Integer> values = makeMutable(candidatesMap.get(pos));
-        values.removeAll(filter);
-        candidatesMap.replace(pos, values);
-    }
-
-    public static List<Integer> getFilterValues(int previousOwnerPosition, int previousOwner, List<Integer> positions, Map<Integer, List<Integer>> candidatesMap) {
-        Field sField = Field.getInstance();
-        List<Integer> valuesToFilterOut = new ArrayList<>();
-        for (Integer position : positions) {
-            if ((position != previousOwnerPosition) && (sField.isDefined(position))) {
-                List<Integer> values = candidatesMap.getOrDefault(position, Arrays.asList());
-                valuesToFilterOut.add(values.get(0));
-            }
+    public static List<Integer> getShuffledList() {
+        List<Integer> shuffledList = new ArrayList<>(Field.FIELD_CAPACITY);
+        for (int i = 0; i < Field.FIELD_CAPACITY; i++) {
+            shuffledList.add(i);
         }
-        return valuesToFilterOut;
+        Collections.shuffle(shuffledList);
+        return shuffledList;
     }
 
-    public static void appendCandidate(int previousOwnerPosition, int previousOwner, List<Integer> positions, Map<Integer, List<Integer>> candidatesMap) {
-        Field sField = Field.getInstance();
-        for (Integer position : positions) {
-            if (position != previousOwnerPosition) {
-                if (!sField.isDefined(position)) {
-                    List<Integer> values = candidatesMap.getOrDefault(position, Arrays.asList());
-                    values.add(previousOwner);
-                    Collections.sort(values);
-                    candidatesMap.replace(position, values);
-                }
+    public static void undo(Field sudokuField, int move) {
+        if (sudokuField.getMoveNumber() == move) return;
+        if (sudokuField.getMoveNumber() == 0) {
+            return;
+        }
+        for (int i = 0; i < Field.FIELD_CAPACITY; i++) {
+            sudokuField.undoFieldElement(i, move);
+        }
+        sudokuField.setMoveNumber(move);
+        Validation.validate();
+    }
+
+    public static void undo(Field sudokuField) {
+        if (sudokuField.getMoveNumber() == 0) {
+            return;
+        }
+        for (int i = 0; i < Field.FIELD_CAPACITY; i++) {
+            sudokuField.undoFieldElement(i);
+        }
+        int moveNumber = sudokuField.getMoveNumber();
+        sudokuField.setMoveNumber(moveNumber - 1);
+        Validation.validate();
+    }
+
+    public static void undo(Field sudokuField, int move, boolean validatedStatus) {
+        if (sudokuField.getMoveNumber() == 0) {
+            return;
+        }
+        for (int i = 0; i < Field.FIELD_CAPACITY; i++) {
+            sudokuField.undoFieldElement(i, move);
+        }
+        sudokuField.setMoveNumber(move);
+        sudokuField.setValidatedStatus();
+        Validation.validate();
+    }
+
+    abstract static class pickRandomValue<T extends Number> {
+        private static final Random rnd = new Random();
+
+        T get(List<T> list) {
+            if (list.size() == 1) {
+                return list.get(0);
             }
+            if (list.isEmpty()) {
+                return getDefault();
+            }
+            int position = rnd.nextInt(list.size());
+            return list.get(position);
+        }
+
+        abstract T getDefault();
+    }
+
+    private static class PickInt extends pickRandomValue<Integer> {
+        @Override
+        Integer getDefault() {
+            return 0;
         }
     }
 }
