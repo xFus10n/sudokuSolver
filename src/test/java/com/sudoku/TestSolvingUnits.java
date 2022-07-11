@@ -6,6 +6,7 @@ import com.sudoku.domain.FieldElement;
 import com.sudoku.utils.Utilz;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

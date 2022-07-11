@@ -21,6 +21,11 @@ public final class Utilz {
         return shuffledList;
     }
 
+    public static List<Integer> getShuffledList(List<Integer> notShuffledList) {
+        Collections.shuffle(notShuffledList);
+        return notShuffledList;
+    }
+
     public static void undo(Field sudokuField, int move) {
         if (sudokuField.getMoveNumber() == move) return;
         if (sudokuField.getMoveNumber() == 0) {

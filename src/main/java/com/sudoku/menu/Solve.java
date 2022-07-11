@@ -9,6 +9,8 @@ import java.util.List;
 import static com.sudoku.Field.FIELD_CAPACITY;
 
 public class Solve implements Action {
+    private static int iterations;
+    private static ConsoleLogger logger = ConsoleLogger.getInstance();
     private static final int SOLVABLE_AMOUNT_ELEMENTS = 17;
 
     @Override
@@ -21,50 +23,16 @@ public class Solve implements Action {
         return "solve sudoku puzzle";
     }
 
-//    @Override
-//    public void execute(Field sudokuField) {
-//        boolean solvable = solvable(sudokuField);
-//        ConsoleLogger logger = ConsoleLogger.getInstance();
-//        logger.toConsole("Sudoku is solvable = " + solvable);
-//        if (!solvable) return;
-//        if (sudokuField.getStatus() == Status.FAILED) return;
-//
-//        int initialMoveNumber = sudokuField.getMoveNumber();
-//        int iterations = 0;
-//        try {
-//            while (sudokuField.getStatus() != Status.SOLVED) {
-//                ConsoleLogger.getInstance().toConsole("Iteration : " + iterations++ + '\r', true);
-//                for (int position : Utilz.getShuffledList()){
-//                    if (sudokuField.getFieldValue(position) != 0) continue;
-//                    List<Integer> positionCandidates = sudokuField.getPositionCandidates(position);
-//                    if (positionCandidates.isEmpty()) {
-//                        Utilz.undo(sudokuField, initialMoveNumber, true);
-//                        break;
-//                    }
-//                    int pickupNumber = Utilz.chooseRandomInteger(positionCandidates);
-//                    sudokuField.setField(position, pickupNumber);
-//                    if (sudokuField.getStatus() == Status.FAILED) {
-//                        Utilz.undo(sudokuField, initialMoveNumber, true);
-//                        break;
-//                    }
-//                }
-//                if (sudokuField.getStatus() != Status.SOLVED) Utilz.undo(sudokuField, initialMoveNumber);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-
     @Override
     public void execute(Field sudokuField) {
-        ConsoleLogger logger = ConsoleLogger.getInstance();
+        iterations = 0;
         boolean solvable = solvable(sudokuField);
         logger.toConsole("Sudoku is solvable = " + solvable);
         if (!solvable) {
             return;
         }
         boolean solved = solve(sudokuField);
+        logger.toConsole(""); //new line for showing iterator
         logger.toConsole("Sudoku has been solved = " + solved);
     }
 
@@ -85,6 +53,7 @@ public class Solve implements Action {
     }
 
     private static boolean solve(Field sudokuField) {
+        logger.toConsole("Iterations: " + ++iterations + '\r', true);
         try {
             for (int i = 0; i < FIELD_CAPACITY; i++) {
                 int fieldValue = sudokuField.getFieldValue(i);
