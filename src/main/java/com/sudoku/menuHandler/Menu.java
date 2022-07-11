@@ -3,6 +3,7 @@ package com.sudoku.menuHandler;
 import com.sudoku.Field;
 import com.sudoku.logger.ConsoleLogger;
 import com.sudoku.menu.Action;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.Map;
 import java.util.Scanner;
