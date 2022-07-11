@@ -1,8 +1,9 @@
 package com.sudoku.logger;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class ConsoleLogger {
+public final class ConsoleLogger {
     private static Logger logger;
     private static ConsoleLogger consoleLogger;
     private ConsoleLogger() {
@@ -11,13 +12,13 @@ public class ConsoleLogger {
     public static synchronized ConsoleLogger getInstance(){
         if (consoleLogger == null) {
             consoleLogger = new ConsoleLogger();
-            logger = Logger.getLogger(ConsoleLogger.class);
+            logger = LogManager.getLogger(ConsoleLogger.class);
         }
         return consoleLogger;
     }
 
     public void toConsole(String msg){
-        logger.info(msg + "\n");
+        logger.info("{}\n", msg);
     }
 
     public void toConsole(String msg, boolean noNewLine){
